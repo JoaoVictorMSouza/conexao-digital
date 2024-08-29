@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Criar usuário BackOffice</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <h1>Criar usuário BackOffice</h1>
+    <form action="#" th:action="@{/usuarioBackOffice/create}" th:object="${usuarioBackOffice}" method="post">
+        <p>Nome: <input type="text" th:field="*{nome}" /></p>
+        <p>Email: <input type="text" th:field="*{email}" /></p>
+        <p>Senha: <input type="password" th:field="*{senha}" /></p>
+        <p><input type="submit" value="Criar" /> <input type="reset" value="Limpar" /></p>
+    </form>
+    <p><a href="/usuarioBackOffice">Voltar para a lista de usuários BackOffice</a></p>
+</body>
+</html>

@@ -1,40 +1,75 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
+# Arquivos e diretórios do sistema operacional
+.DS_Store
+Thumbs.db
 
-.idea/
+# Diretório de dependências do Maven
+/target/
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
-*.iml
-*.ipr
+# Arquivos de logs
+*.log
+logs/
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# Arquivos de configuração temporários
+*.tmp
+*.swp
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Arquivos de configuração específicos do IDE
+/.classpath
+/.project
+/.settings/
+/.idea/
+/*.iml
 
-### VS Code ###
+# Arquivos gerados pelo Visual Studio Code
 .vscode/
 
-### Mac OS ###
-.DS_Store
+# Arquivos e diretórios do IntelliJ IDEA
+/.idea/
+/*.iml
+/out/
+
+# Arquivos específicos do Eclipse
+/.settings/
+/.classpath
+/.project
+/.metadata/
+/bin/
+
+# Arquivos de teste e cobertura de teste
+/test-output/
+/surefire-reports/
+/jacoco.exec
+
+# Banco de dados H2 em modo de arquivo (caso use)
+*.h2.db
+*.mv.db
+
+# Arquivos de compilação e dependências locais
+.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/mvnw*
+!**/src/main/**/mvnw.cmd
+
+# Arquivos de configuração de ambiente
+.env
+*.env
+
+# Arquivos de cache e dados temporários
+/tmp/
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Arquivos de cobertura de código (gerados por ferramentas de cobertura)
+coverage/
+*.lcov
+
+# Arquivos de execução e de aplicativos locais
+*.jar
+*.war
+*.ear
+
+# Arquivos de biblioteca e build gerados
+lib/
+*.class
