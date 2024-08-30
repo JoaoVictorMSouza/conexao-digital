@@ -14,6 +14,7 @@ public class UsuarioBackOffice {
     private String cpf;
     private String email;
     private String senha;
+    private boolean isAtivo;
 
     public Integer getId() {
         return id;
@@ -45,5 +46,13 @@ public class UsuarioBackOffice {
     }
     public void setSenha(String senha) {
         this.senha = senha;
+    }
+
+    public void setAtivo(boolean isAtivo) {
+        this.isAtivo = isAtivo;
+    }
+
+    public boolean isAtivo() {
+        return isAtivo;
     }
 }

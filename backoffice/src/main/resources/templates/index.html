@@ -1,10 +1,30 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Home Page</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <title>Home BackOffice</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}" /> <!-- Referência ao CSS do fragmento -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-    <a th:href="@{/usuario/listarUsuariosBackOffice}">View Tasks</a>
+<body class="h-100">
+    <!-- Incluindo o fragmento de cabeçalho -->
+    <div th:insert="~{fragments/header :: header}"></div>
+    
+    <main class="d-flex flex-column h-100">
+        <div class="d-flex justify-content-center align-items-center h-100 mt-5">
+            <a th:href="@{/usuario/listarUsuariosBackOffice}">
+                <div class="card text-center mb-3 d-flex justify-content-center align-items-center user-card">
+                    <img src="/images/users-icon.png" class="card-img-top w-50" alt="ícone de usuários">
+                    <div class="card-body">
+                        <a th:href="@{/usuario/listarUsuariosBackOffice}" class="btn btn-primary">Usuários</a>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

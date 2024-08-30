@@ -2,28 +2,39 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Listar usuários BackOffice</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/listarUsuariosBackOffice.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}" /> <!-- Referência ao CSS do fragmento -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-    <h1>Listar usuários BackOffice</h1>
-    <table>
-        <tr>
-            <th>Nome</th>
-            <th>Email</th>
-            <th>Senha</th>
-            <th></th>
-        </tr>
-        <tr th:each="usuarioBackOffice : ${usuariosBackOffice}">
-            <td th:text="${usuarioBackOffice.nome}">Nome</td>
-            <td th:text="${usuarioBackOffice.email}">Email</td>
-            <td th:text="${usuarioBackOffice.senha}">Senha</td>
-            <td>
-                <a th:href="@{'/usuarioBackOffice/edit/' + ${usuarioBackOffice.id}}">Editar</a>
-                <a th:href="@{'/usuarioBackOffice/delete/' + ${usuarioBackOffice.id}}">Excluir</a>
-            </td>
-        </tr>
-    </table>
-    <p><a href="/usuarioBackOffice/create">Criar novo usuário BackOffice</a></p>
-    <p><a href="/usuarioBackOffice">Voltar para a lista de usuários BackOffice</a></p>
+<body class="h-100">
+    <!-- Incluindo o fragmento de cabeçalho -->
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <main>
+        <h1>Listar usuários BackOffice</h1>
+        <table>
+            <tr>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Senha</th>
+                <th></th>
+            </tr>
+            <tr th:each="usuarioBackOffice : ${usuariosBackOffice}">
+                <td th:text="${usuarioBackOffice.nome}">Nome</td>
+                <td th:text="${usuarioBackOffice.email}">Email</td>
+                <td th:text="${usuarioBackOffice.senha}">Senha</td>
+                <td>
+                    <a th:href="@{'/usuarioBackOffice/edit/' + ${usuarioBackOffice.id}}">Editar</a>
+                    <a th:href="@{'/usuarioBackOffice/delete/' + ${usuarioBackOffice.id}}">Excluir</a>
+                </td>
+            </tr>
+        </table>
+        <p><a th:href="@{/usuario/criar}">Criar novo usuário BackOffice</a></p>
+        <p><a href="/">Home</a></p>    
+    </main>
+   
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

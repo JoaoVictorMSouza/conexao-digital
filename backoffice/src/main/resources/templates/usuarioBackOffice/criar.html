@@ -2,16 +2,32 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Criar usuário BackOffice</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link rel="stylesheet" th:href="@{/css/criarUsuarioBackoffice.css}">
+    <link rel="stylesheet" th:href="@{/css/header.css}" /> <!-- Referência ao CSS do fragmento -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
-<body>
-    <h1>Criar usuário BackOffice</h1>
-    <form action="#" th:action="@{/usuarioBackOffice/create}" th:object="${usuarioBackOffice}" method="post">
-        <p>Nome: <input type="text" th:field="*{nome}" /></p>
-        <p>Email: <input type="text" th:field="*{email}" /></p>
-        <p>Senha: <input type="password" th:field="*{senha}" /></p>
-        <p><input type="submit" value="Criar" /> <input type="reset" value="Limpar" /></p>
-    </form>
-    <p><a href="/usuarioBackOffice">Voltar para a lista de usuários BackOffice</a></p>
+<body class="h-100">
+
+    <!-- Incluindo o fragmento de cabeçalho -->
+    <div th:insert="~{fragments/header :: header}"></div>
+
+    <main class="d-flex flex-column h-100">
+        <h1>Criar usuário BackOffice</h1>
+        <form action="#" th:action="@{/usuario/criar}" th:object="${usuarioBackOffice}" method="post">
+            <p>Nome: <input type="text" th:field="*{nome}" /></p>
+            <p>Email: <input type="text" th:field="*{email}" /></p>
+            <p>Senha: <input type="password" th:field="*{senha}" /></p>
+            <!-- <p>Confirmar senha: <input type="password" th:field="*{confirmarSenha}" /></p> -->
+            <p>
+                <input type="submit" value="Criar" /> 
+                <input type="reset" value="Limpar" />
+            </p>
+        </form>
+        <p><a th:href="@{/usuario/listarUsuariosBackOffice}">Voltar para a lista de usuários BackOffice</a></p>
+    </main>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
