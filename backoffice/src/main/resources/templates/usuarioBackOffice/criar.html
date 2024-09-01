@@ -2,32 +2,73 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Criar usuário BackOffice</title>
-    <link rel="stylesheet" th:href="@{/css/criarUsuarioBackoffice.css}">
     <link rel="stylesheet" th:href="@{/css/header.css}" /> <!-- Referência ao CSS do fragmento -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
-<body class="h-100">
+<body class="d-flex flex-column min-vh-100">
 
     <!-- Incluindo o fragmento de cabeçalho -->
     <div th:insert="~{fragments/header :: header}"></div>
 
-    <main class="d-flex flex-column h-100">
+    <main class="d-flex flex-grow-1 flex-column justify-content-center align-items-center col">
         <h1>Criar usuário BackOffice</h1>
-        <form action="#" th:action="@{/usuario/criar}" th:object="${usuarioBackOffice}" method="post">
-            <p>Nome: <input type="text" th:field="*{nome}" /></p>
-            <p>Email: <input type="text" th:field="*{email}" /></p>
-            <p>Senha: <input type="password" th:field="*{senha}" /></p>
-            <!-- <p>Confirmar senha: <input type="password" th:field="*{confirmarSenha}" /></p> -->
-            <p>
-                <input type="submit" value="Criar" /> 
-                <input type="reset" value="Limpar" />
-            </p>
+        <form action="#" th:action="@{/usuario/criar}" th:object="${usuarioBackoffice}" method="post" class=" mb-5" id="formulario-criar-usuario">
+            <div class="form-group">
+                <label for="nome">Nome:</label>
+                <input type="text" class="form-control" id="nome" th:field="*{nome}" />
+            </div>
+            <div class="form-group">
+                <label for="cpf">CPF:</label>
+                <input type="text" class="form-control" id="cpf" th:field="*{cpf}" />
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" th:field="*{email}" onblur="validarEmail()" />
+            </div>
+            <div class="row">
+                <div class="form-group col-6">
+                    <label for="senha">Senha:</label>
+                    <input type="password" class="form-control" id="senha" th:field="*{senha}" />
+                </div>
+                <div class="form-group col-6">
+                    <label for="confirmacaoSenha">Confirmar senha:</label>
+                    <input type="password" class="form-control" id="confirmacaoSenha" th:field="*{confirmacaoSenha}" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="grupo-usuario">Grupo:</label>
+                <select class="form-select" id="grupo-usuario" th:field="*{idUsuarioGrupo}">
+                    <option value="-1">Selecione um grupo</option>
+                    <option value="1">Administrador</option>
+                    <option value="2">Estoquista</option>
+                </select>
+            </div>
+
+            <input type="hidden" class="form-control" id="ativo" name="ativo" value="true" checked />
+
+            <div class="row justify-content-between w-100 mx-0 mt-3">
+                <button type="submit" class="btn btn-primary col-2">Criar</button>
+                <button type="reset" class="btn btn-secondary col-2">Limpar</button>
+            </div>
         </form>
-        <p><a th:href="@{/usuario/listarUsuariosBackOffice}">Voltar para a lista de usuários BackOffice</a></p>
+        <p>
+            <a th:href="@{/usuario/listarUsuariosBackOffice}">Voltar para a lista de usuários BackOffice</a>
+        </p>
+
+        <div class="toast-container p-3 bottom-0 end-0" th:insert="~{fragments/toastErro}"></div>
+
     </main>
     
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Adicionando o Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Adicionar jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- Adicionar jQuery Mask Plugin -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <!-- Adicionar o arquivo com as funções do toast -->
+    <script src="/js/toast.js"></script>
+    <!-- Adicionar o arquivo com as funções de validação da informações do usuário -->
+    <script src="/js/usuarioBackoffice.js"></script>
 </body>
 </html>

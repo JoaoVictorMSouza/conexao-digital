@@ -1,7 +1,8 @@
 package com.conexao_digital.backoffice.service.interfaces;
 
-import com.conexao_digital.backoffice.model.UsuarioBackOffice;
+import com.conexao_digital.backoffice.dto.UsuarioBackofficeDTO;
 
 public interface IUsuarioService {
-    UsuarioBackOffice createUsuarioBackOffice(UsuarioBackOffice usuario);
+    UsuarioBackofficeDTO criarUsuarioBackOffice(UsuarioBackofficeDTO usuarioBackofficeDTO);
+    boolean verificarExistenciaEmail(String email);
 }

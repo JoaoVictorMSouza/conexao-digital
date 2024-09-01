@@ -40,9 +40,10 @@ logs/
 /surefire-reports/
 /jacoco.exec
 
-# Banco de dados H2 em modo de arquivo (caso use)
+# Banco de dados H2 em modo de arquivo
 *.h2.db
 *.mv.db
+*.trace.db
 
 # Arquivos de compilação e dependências locais
 .mvn/
