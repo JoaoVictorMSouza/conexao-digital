@@ -7,6 +7,7 @@ import com.conexao_digital.backoffice.entity.UsuarioBackofficeEntity;
 public class UsuarioBackofficeDTOMap extends PropertyMap<UsuarioBackofficeEntity, UsuarioBackofficeDTO> {
     @Override
     protected void configure() {
+        map().setId(source.getIdUsuario().intValue());
         map().setNome(source.getDsNome());
         map().setCpf(source.getDsCpf());
         map().setEmail(source.getDsEmail());

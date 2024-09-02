@@ -3,6 +3,7 @@ package com.conexao_digital.backoffice.dto;
 import com.conexao_digital.backoffice.enums.UsuarioGrupo;
 
 public class UsuarioBackofficeDTO {
+    private int id;
     private String nome;
     private String cpf;
     private String email;
@@ -11,6 +12,13 @@ public class UsuarioBackofficeDTO {
     private int idUsuarioGrupo;
     private UsuarioGrupo usuarioGrupo;
     private boolean ativo;
+
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;

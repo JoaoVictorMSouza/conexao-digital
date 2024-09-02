@@ -1,16 +1,12 @@
 package com.conexao_digital.backoffice.controller;
 
 import java.util.Map;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.bind.annotation.*;
 import com.conexao_digital.backoffice.dto.UsuarioBackofficeDTO;
 import com.conexao_digital.backoffice.exception.UsuarioBackofficeException;
 import com.conexao_digital.backoffice.service.interfaces.IUsuarioService;
@@ -28,7 +24,9 @@ public class UsuarioBackofficeController {
     }
 
     @GetMapping("/listarUsuariosBackOffice")
-    public String listarUsuariosBackOffice() {
+    public String listarUsuariosBackOffice(Model model) {
+        List<UsuarioBackofficeDTO> listaUsuariosBackofficeDTO = this.usuarioService.listarUsuariosBackOffice();
+        model.addAttribute("listaUsuariosBackoffice", listaUsuariosBackofficeDTO);
         return "usuarioBackOffice/listarUsuariosBackoffice";
     }
 
@@ -44,7 +42,7 @@ public class UsuarioBackofficeController {
         Map<String, String> response = new HashMap<>();
 
         try {
-            UsuarioBackofficeDTO usuarioCadastrado = usuarioService.criarUsuarioBackOffice(usuarioBackofficeDTO);
+            this.usuarioService.criarUsuarioBackOffice(usuarioBackofficeDTO);
 
             response.put("status", "OK");
 
@@ -59,7 +57,7 @@ public class UsuarioBackofficeController {
 
     @GetMapping("/consultarEmail")
     public ResponseEntity<Map<String, Boolean>> consultarEmail(@RequestParam String email) {
-        boolean emailExiste = usuarioService.verificarExistenciaEmail(email);
+        boolean emailExiste = this.usuarioService.verificarExistenciaEmail(email);
         Map<String, Boolean> response = new HashMap<>();
         response.put("emailExiste", emailExiste);
         return ResponseEntity.ok(response);

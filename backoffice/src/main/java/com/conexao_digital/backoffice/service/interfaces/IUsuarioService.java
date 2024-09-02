@@ -1,8 +1,10 @@
 package com.conexao_digital.backoffice.service.interfaces;
 
 import com.conexao_digital.backoffice.dto.UsuarioBackofficeDTO;
+import java.util.List;
 
 public interface IUsuarioService {
-    UsuarioBackofficeDTO criarUsuarioBackOffice(UsuarioBackofficeDTO usuarioBackofficeDTO);
+    void criarUsuarioBackOffice(UsuarioBackofficeDTO usuarioBackofficeDTO);
     boolean verificarExistenciaEmail(String email);
+    List<UsuarioBackofficeDTO> listarUsuariosBackOffice();
 }

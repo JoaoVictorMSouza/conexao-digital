@@ -157,3 +157,17 @@ function criarUsuarioBackOffice() {
         }
     });
 }
+
+function filtrarUsuarios() {
+    const textoFiltro = document.getElementById('campoFiltro').value.toLowerCase();
+    const linhasUsuarios = document.querySelectorAll('.linha-usuario');
+    
+    linhasUsuarios.forEach(linha => {
+        const nomeUsuario = linha.querySelector('.nome-usuario').textContent.toLowerCase();
+        if (nomeUsuario.includes(textoFiltro)) {
+            linha.style.display = '';
+        } else {
+            linha.style.display = 'none';
+        }
+    });
+}

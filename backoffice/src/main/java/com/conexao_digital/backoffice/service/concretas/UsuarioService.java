@@ -4,13 +4,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.conexao_digital.backoffice.dto.UsuarioBackofficeDTO;
 import com.conexao_digital.backoffice.entity.UsuarioBackofficeEntity;
 import com.conexao_digital.backoffice.exception.UsuarioBackofficeException;
 import com.conexao_digital.backoffice.repository.interfaces.IUsuarioBackOfficeRepository;
 import com.conexao_digital.backoffice.service.interfaces.IUsuarioService;
 import com.conexao_digital.backoffice.utils.CpfUtils;
+import java.util.List;
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -25,7 +25,7 @@ public class UsuarioService implements IUsuarioService {
         this.senhaEncoder = senhaEncoder;
     }
 
-    public UsuarioBackofficeDTO criarUsuarioBackOffice(UsuarioBackofficeDTO usuarioBackofficeDTO) {
+    public void criarUsuarioBackOffice(UsuarioBackofficeDTO usuarioBackofficeDTO) {
         usuarioBackofficeDTO.setUsuarioGrupo();
 
         this.validarSenha(usuarioBackofficeDTO.getSenha(), usuarioBackofficeDTO.getConfirmacaoSenha());
@@ -49,8 +49,6 @@ public class UsuarioService implements IUsuarioService {
         usuarioBackofficeEntity.setAtivo(true);
 
         UsuarioBackofficeEntity usuarioCadastrado = usuarioRepository.save(usuarioBackofficeEntity);
-
-        return this.mapearUsuarioBackofficeEntityParaUsuarioBackofficeDTO(usuarioCadastrado);
     }
 
     private UsuarioBackofficeDTO mapearUsuarioBackofficeEntityParaUsuarioBackofficeDTO(UsuarioBackofficeEntity usuarioBackofficeEntity) {
@@ -75,5 +73,15 @@ public class UsuarioService implements IUsuarioService {
         };
 
         return false;
+    }
+
+    public List<UsuarioBackofficeDTO> listarUsuariosBackOffice() {
+        List<UsuarioBackofficeEntity> usuariosBackofficeEntity = usuarioRepository.findAll();
+
+        List<UsuarioBackofficeDTO> usuariosBackofficeDTO = usuariosBackofficeEntity.stream()
+                .map(usuarioBackofficeEntity -> this.mapearUsuarioBackofficeEntityParaUsuarioBackofficeDTO(usuarioBackofficeEntity))
+                .toList();
+
+        return usuariosBackofficeDTO;
     }
 }
