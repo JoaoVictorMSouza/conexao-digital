@@ -11,8 +11,16 @@
     <div th:insert="~{fragments/header :: header}"></div>
     
     <main class="d-flex flex-grow-1 justify-content-center align-items-center">
-        <a th:href="@{/usuario/listarUsuariosBackOffice}">
-            <div class="card text-center mb-3 d-flex justify-content-center align-items-center user-card">
+        <a>
+            <div class="card text-center d-flex justify-content-center align-items-center user-card p-2">
+                <img src="/images/products-icon.png" class="card-img-top w-50" alt="ícone de produtos">
+                <div class="card-body">
+                    <a class="btn btn-primary">Produtos</a>
+                </div>
+            </div>
+        </a>
+        <a th:href="@{/usuario/listarUsuariosBackOffice}" th:if="${usuarioLogado.grupo == 'ADMIN'}">
+            <div class="card text-center d-flex justify-content-center align-items-center user-card p-2">
                 <img src="/images/users-icon.png" class="card-img-top w-50" alt="ícone de usuários">
                 <div class="card-body">
                     <a th:href="@{/usuario/listarUsuariosBackOffice}" class="btn btn-primary">Usuários</a>
@@ -21,10 +29,10 @@
         </a>
     </main>
 
-<!-- Adicionando o Bootstrap -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-<!-- Adicionar jQuery -->
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <!-- Adicionando o Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <!-- Adicionar jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
 </body>
 </html>

@@ -1,0 +1,1 @@
+INSERT INTO usuario_backoffice (ID_GRUPO, IS_ATIVO, DS_CPF, DS_EMAIL, DS_NOME, DS_SENHA) VALUES (1, true, '191.191.191-00', 'admin@admin.com.br', 'Administrador', '$2a$10$bO6kAvdG9OuyEhS4IMHltuTqvPRB80tRuYFckMs1LEbMnfB8w8p2K');
