@@ -5,16 +5,26 @@ $(document).ready(function(){
 $(document).ready(function () {
     $('#formulario-criar-usuario').submit(async function(e) {
         e.preventDefault();
-        let isInformacoesValidas = await validarInformacoesUsuario();
+        let isInformacoesValidas = await validarInformacoesCriarUsuario();
         if (isInformacoesValidas) {
             criarUsuarioBackOffice();
         }
     });
 });
 
+$(document).ready(function () {
+    $('#formulario-editar-usuario').submit(async function(e) {
+        e.preventDefault();
+        let isInformacoesValidas = await validarInformacoesEditarUsuario();
+        if (isInformacoesValidas) {
+            editarUsuarioBackOffice();
+        }
+    });
+});
+
 const emailEl = document.getElementById("email");
 
-async function validarInformacoesUsuario(){
+async function validarInformacoesCriarUsuario(){
     try {
         fecharToast();
 
@@ -155,6 +165,10 @@ function criarUsuarioBackOffice() {
         } else {
             abrirToastErro("Erro ao inserir usuário.");
         }
+    }).fail(function(data) {
+        if (data.responseText) {
+            abrirToastErro(data.responseText);
+        }
     });
 }
 
@@ -168,6 +182,73 @@ function filtrarUsuarios() {
             linha.style.display = '';
         } else {
             linha.style.display = 'none';
+        }
+    });
+}
+
+ function validarInformacoesEditarUsuario(){
+    try {
+        fecharToast();
+
+        let nome = document.getElementById("nome").value;
+        let cpf = document.getElementById("cpf").value;
+        let senha = document.getElementById("senha").value;
+        let confirmacaoSenha = document.getElementById("confirmacaoSenha").value;
+        let grupo = document.getElementById("grupo-usuario").value;
+    
+        if (nome === ""){
+            abrirToastErro("Nome é obrigatório.");
+            return false;
+        }
+
+        if (cpf === "" ){
+            abrirToastErro("CPF é obrigatório.");
+            return false;
+        }
+
+        if (!validarCPF(cpf)) {
+            return false;
+        }
+    
+        if ((senha !== "" || confirmacaoSenha !== "") && !validarSenha()){
+            return false;
+        }
+    
+        if (grupo === "" || Number(grupo) <= 0){
+            abrirToastErro("Grupo é obrigatório.");
+            return false;
+        }
+    
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+
+function editarUsuarioBackOffice() {
+    let usuario = {
+        id: $("#id-usuario").val(),
+        nome: $("#nome").val(),
+        cpf: $("#cpf").val(),
+        senha: $("#senha").val(),
+        confirmacaoSenha: $("#confirmacaoSenha").val(),
+        idUsuarioGrupo: $("#grupo-usuario").val()
+    }
+
+    $.post("/usuario/editar", usuario, function(data) {
+        if (data) {
+            if (data.status === "OK") {
+                window.location.href = "/usuario/listarUsuariosBackOffice";
+            } else {
+                abrirToastErro(data.mensagem);
+            }
+        } else {
+            abrirToastErro("Erro ao editar usuário.");
+        }
+    }).fail(function(data) {
+        if (data.responseText) {
+            abrirToastErro(data.responseText);
         }
     });
 }

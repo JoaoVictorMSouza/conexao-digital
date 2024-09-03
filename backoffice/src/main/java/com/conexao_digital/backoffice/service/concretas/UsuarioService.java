@@ -84,4 +84,50 @@ public class UsuarioService implements IUsuarioService {
 
         return usuariosBackofficeDTO;
     }
+
+    public UsuarioBackofficeDTO buscarUsuarioPorId(int id) {
+        UsuarioBackofficeEntity usuarioBackofficeEntity = usuarioRepository.findByIdUsuario(id);
+
+        if (usuarioBackofficeEntity == null) {
+            throw new UsuarioBackofficeException("Usuário não encontrado");
+        }
+
+        return this.mapearUsuarioBackofficeEntityParaUsuarioBackofficeDTO(usuarioBackofficeEntity);
+    }
+
+    public void editarUsuarioBackOffice(UsuarioBackofficeDTO usuarioBackofficeDTO){
+        UsuarioBackofficeEntity usuarioBackofficeEntity = usuarioRepository.findByIdUsuario(usuarioBackofficeDTO.getId());
+
+        if (usuarioBackofficeEntity == null) {
+            throw new UsuarioBackofficeException("Usuário não encontrado");
+        }
+
+        if ((usuarioBackofficeDTO.getSenha() != null && !usuarioBackofficeDTO.getSenha().trim().isEmpty()) || 
+            (usuarioBackofficeDTO.getConfirmacaoSenha() != null && !usuarioBackofficeDTO.getConfirmacaoSenha().trim().isEmpty())) {
+            this.validarSenha(usuarioBackofficeDTO.getSenha(), usuarioBackofficeDTO.getConfirmacaoSenha());
+
+            // Encripta a senha
+            String senhaEncriptada = senhaEncoder.encode(usuarioBackofficeDTO.getSenha());
+            usuarioBackofficeDTO.setSenha(senhaEncriptada);
+            usuarioBackofficeEntity.setDsSenha(usuarioBackofficeDTO.getSenha());
+        }
+
+        if (usuarioBackofficeDTO.getNome() != null && !usuarioBackofficeDTO.getNome().trim().isEmpty()) {
+            usuarioBackofficeEntity.setDsNome(usuarioBackofficeDTO.getNome()); 
+        }
+
+        if (usuarioBackofficeDTO.getCpf() != null && !usuarioBackofficeDTO.getCpf().trim().isEmpty()) {
+            if (!CpfUtils.validarCPF(usuarioBackofficeDTO.getCpf())) {
+                throw new UsuarioBackofficeException("CPF inválido");
+            }
+
+            usuarioBackofficeEntity.setDsCpf(usuarioBackofficeDTO.getCpf());
+        }
+
+        if (usuarioBackofficeDTO.getIdUsuarioGrupo() != usuarioBackofficeEntity.getIdGrupo()) {
+            usuarioBackofficeEntity.setIdGrupo(usuarioBackofficeDTO.getIdUsuarioGrupo());     
+        }
+
+        usuarioRepository.save(usuarioBackofficeEntity);
+    }
 }

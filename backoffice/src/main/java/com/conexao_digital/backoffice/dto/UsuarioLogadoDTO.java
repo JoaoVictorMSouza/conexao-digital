@@ -6,6 +6,7 @@ import com.conexao_digital.backoffice.enums.UsuarioGrupo;
 import com.conexao_digital.backoffice.utils.AutenticacaoUtils;
 
 public class UsuarioLogadoDTO {
+    private int id;
     private String email;
     private String grupo;
     private String nome;
@@ -16,6 +17,7 @@ public class UsuarioLogadoDTO {
         this.usuarioGrupo = AutenticacaoUtils.retornarUsuarioGrupo(usuario);
         this.grupo = this.usuarioGrupo.name();
         this.nome = usuarioBackoffice.getDsNome();
+        this.id = usuarioBackoffice.getIdUsuario();
     }
 
     public String getEmail() {
@@ -32,5 +34,9 @@ public class UsuarioLogadoDTO {
 
     public String getNome() {
         return nome;
+    }
+
+    public int getId() {
+        return id;
     }
 }

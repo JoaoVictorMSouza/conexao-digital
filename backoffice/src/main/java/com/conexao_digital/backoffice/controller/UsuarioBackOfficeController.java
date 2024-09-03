@@ -8,23 +8,29 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import com.conexao_digital.backoffice.dto.UsuarioBackofficeDTO;
+import com.conexao_digital.backoffice.dto.UsuarioLogadoDTO;
 import com.conexao_digital.backoffice.exception.UsuarioBackofficeException;
+import com.conexao_digital.backoffice.service.interfaces.IAutenticacaoService;
 import com.conexao_digital.backoffice.service.interfaces.IUsuarioService;
-import org.springframework.web.bind.annotation.RequestParam;
 import java.util.HashMap;
 
 @Controller
 @RequestMapping("/usuario")
 public class UsuarioBackofficeController {
     private IUsuarioService usuarioService;
+    private IAutenticacaoService autenticacaoService;
     
     @Autowired
-    public UsuarioBackofficeController(IUsuarioService iUsuarioService) {
+    public UsuarioBackofficeController(IUsuarioService iUsuarioService, IAutenticacaoService autenticacaoService) {
         this.usuarioService = iUsuarioService;
+        this.autenticacaoService = autenticacaoService;
     }
 
     @GetMapping("/listarUsuariosBackOffice")
     public String listarUsuariosBackOffice(Model model) {
+        UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarioLogado);
+
         List<UsuarioBackofficeDTO> listaUsuariosBackofficeDTO = this.usuarioService.listarUsuariosBackOffice();
         model.addAttribute("listaUsuariosBackoffice", listaUsuariosBackofficeDTO);
         return "usuarioBackOffice/listarUsuariosBackoffice";
@@ -32,6 +38,9 @@ public class UsuarioBackofficeController {
 
     @GetMapping("/criar")
     public String criarUsuarioBackOffice(Model model) {
+        UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarioLogado);
+
         UsuarioBackofficeDTO usuarioBackofficeDTO = new UsuarioBackofficeDTO();
         model.addAttribute("usuarioBackoffice", usuarioBackofficeDTO);
         return "usuarioBackOffice/criar";
@@ -63,4 +72,32 @@ public class UsuarioBackofficeController {
         return ResponseEntity.ok(response);
     }
     
+    @GetMapping("/editar/{id}")
+    public String editarUsuarioBackOffice(@PathVariable("id") int id, Model model) {
+        UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarioLogado);
+
+        UsuarioBackofficeDTO usuarioBackofficeDTO = this.usuarioService.buscarUsuarioPorId(id);
+        model.addAttribute("usuarioBackoffice", usuarioBackofficeDTO);
+
+        return "usuarioBackOffice/editar";
+    }
+
+    @PostMapping("/editar")
+    public ResponseEntity<Map<String, String>> editarUsuarioBackOffice(@ModelAttribute("usuarioBackoffice") UsuarioBackofficeDTO usuarioBackofficeDTO) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            this.usuarioService.editarUsuarioBackOffice(usuarioBackofficeDTO);
+
+            response.put("status", "OK");
+
+            return ResponseEntity.ok(response);
+        } catch (UsuarioBackofficeException e) {
+            System.out.println(e.getMessage());
+            response.put("status", "ERROR");
+            response.put("mensagem", e.getMessage());
+            throw e;
+        }
+    }
 }
