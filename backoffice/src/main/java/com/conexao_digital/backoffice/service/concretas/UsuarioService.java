@@ -1,16 +1,18 @@
 package com.conexao_digital.backoffice.service.concretas;
 
+import java.util.List;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import com.conexao_digital.backoffice.dto.UsuarioBackofficeDTO;
 import com.conexao_digital.backoffice.entity.UsuarioBackofficeEntity;
 import com.conexao_digital.backoffice.exception.UsuarioBackofficeException;
 import com.conexao_digital.backoffice.repository.interfaces.IUsuarioBackOfficeRepository;
 import com.conexao_digital.backoffice.service.interfaces.IUsuarioService;
 import com.conexao_digital.backoffice.utils.CpfUtils;
-import java.util.List;
 
 @Service
 public class UsuarioService implements IUsuarioService {
@@ -127,6 +129,17 @@ public class UsuarioService implements IUsuarioService {
         if (usuarioBackofficeDTO.getIdUsuarioGrupo() != usuarioBackofficeEntity.getIdGrupo()) {
             usuarioBackofficeEntity.setIdGrupo(usuarioBackofficeDTO.getIdUsuarioGrupo());     
         }
+
+        usuarioRepository.save(usuarioBackofficeEntity);
+    }
+    public void editarStatusUsuarioBackOffice(UsuarioBackofficeDTO usuarioBackofficeDTO) {
+        UsuarioBackofficeEntity usuarioBackofficeEntity = usuarioRepository.findByIdUsuario(usuarioBackofficeDTO.getId());
+
+        if (usuarioBackofficeEntity == null) {
+            throw new UsuarioBackofficeException("Usuário não encontrado");
+        }
+
+        usuarioBackofficeEntity.setAtivo(usuarioBackofficeDTO.isAtivo());
 
         usuarioRepository.save(usuarioBackofficeEntity);
     }

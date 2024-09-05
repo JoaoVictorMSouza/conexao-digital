@@ -109,8 +109,20 @@ public class UsuarioBackofficeController {
     }
 
     @PostMapping("/mudarStatus")
-    public String editarStatusUsuarioBackOffice(@ModelAttribute("usuarioBackoffice") UsuarioBackofficeDTO usuarioBackofficeDTO) {
-        //CONSTRUIR TODA A LOGICA DE MUDANÇA DE STATUS
-        return "usuarioBackOffice/listarUsuariosBackoffice";
+    public ResponseEntity<Map<String, String>> editarStatusUsuarioBackOffice(@ModelAttribute("usuarioBackoffice") UsuarioBackofficeDTO usuarioBackofficeDTO) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            this.usuarioService.editarStatusUsuarioBackOffice(usuarioBackofficeDTO);
+
+            response.put("status", "OK");
+
+            return ResponseEntity.ok(response);
+        } catch (UsuarioBackofficeException e) {
+            System.out.println(e.getMessage());
+            response.put("status", "ERROR");
+            response.put("mensagem", e.getMessage());
+            throw e;
+        }
     }
 }
