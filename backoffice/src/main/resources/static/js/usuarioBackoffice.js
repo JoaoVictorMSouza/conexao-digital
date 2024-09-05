@@ -225,7 +225,6 @@ function filtrarUsuarios() {
     }
 }
 
-
 function editarUsuarioBackOffice() {
     let usuario = {
         id: $("#id-usuario").val(),
@@ -245,6 +244,26 @@ function editarUsuarioBackOffice() {
             }
         } else {
             abrirToastErro("Erro ao editar usuário.");
+        }
+    }).fail(function(data) {
+        if (data.responseText) {
+            abrirToastErro(data.responseText);
+        }
+    });
+}
+
+function editarStatusUsuarioBackOffice(element) {
+    debugger;
+    let usuario = {
+        id: element.dataset.idusuario,
+        ativo: element.checked
+    }
+
+    $.post("/usuario/mudarStatus", usuario, function(data) {
+        if (data) {
+            window.location.href = "/usuario/listarUsuariosBackOffice";
+        } else {
+            abrirToastErro("Erro ao editar status do usuário.");
         }
     }).fail(function(data) {
         if (data.responseText) {

@@ -107,4 +107,10 @@ public class UsuarioBackofficeController {
             throw e;
         }
     }
+
+    @PostMapping("/mudarStatus")
+    public String editarStatusUsuarioBackOffice(@ModelAttribute("usuarioBackoffice") UsuarioBackofficeDTO usuarioBackofficeDTO) {
+        //CONSTRUIR TODA A LOGICA DE MUDANÇA DE STATUS
+        return "usuarioBackOffice/listarUsuariosBackoffice";
+    }
 }

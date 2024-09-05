@@ -40,7 +40,7 @@
                     <td th:text="${usuarioBackOffice.email}">Email</td>
                     <td>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" th:checked="${usuarioBackOffice.ativo}">
+                            <input class="form-check-input" type="checkbox" th:data-idUsuario="${usuarioBackOffice.id}" th:checked="${usuarioBackOffice.ativo}" onchange="editarStatusUsuarioBackOffice(this)">
                         </div>
                     </td>
                     <td th:text="${usuarioBackOffice.usuarioGrupo.name()}">Grupo</td>
