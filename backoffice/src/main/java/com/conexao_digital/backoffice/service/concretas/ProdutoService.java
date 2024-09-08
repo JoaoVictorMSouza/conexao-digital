@@ -23,7 +23,34 @@ public class ProdutoService implements IProdutoService {
         this.modelMapper = modelMapper;
     }
 
-    public void criarProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO) {
+    public ProdutoBackofficeEntity criarProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO) {
+        if (produtoBackofficeDTO.getNome() == null || produtoBackofficeDTO.getNome().trim().isEmpty()) {
+            throw new ProdutoBackofficeException("Nome do produto não pode ser vazio");
+        }
+
+        if (produtoBackofficeDTO.getNome().length() > 200) {
+            throw new ProdutoBackofficeException("Nome do produto não pode ter mais de 200 caracteres");
+        }
+
+        if (produtoBackofficeDTO.getDescricaoDetalhada().length() > 2000) {
+            throw new ProdutoBackofficeException("Descrição detalhada do produto não pode ter mais de 2000 caracteres");
+        }
+
+        if (produtoBackofficeDTO.getPreco() < 0) {
+            throw new ProdutoBackofficeException("Preço do produto não pode ser negativo");
+        }
+
+        if (produtoBackofficeDTO.getQuantidadeEstoque() < 0) {
+            throw new ProdutoBackofficeException("Quantidade em estoque do produto não pode ser negativa");
+        }
+
+        if (produtoBackofficeDTO.getAvaliacao() < 0 || produtoBackofficeDTO.getAvaliacao() > 5) {
+            throw new ProdutoBackofficeException("Avaliação do produto deve ser entre 0 e 5");
+        }
+
+        ProdutoBackofficeEntity produtoBackofficeEntity = this.mapearProdutoBackofficeDTOParaProdutoBackofficeEntity(produtoBackofficeDTO);
+
+        return produtoRepository.save(produtoBackofficeEntity);
     }
 
     private ProdutoBackofficeDTO mapearProdutoBackofficeEntityParaProdutoBackofficeDTO(ProdutoBackofficeEntity produtoBackofficeEntity) {

@@ -74,3 +74,6 @@ coverage/
 # Arquivos de biblioteca e build gerados
 lib/
 *.class
+
+# Arquivos de imagens que foram salvas localmente
+/src/main/resources/static/uploads/*

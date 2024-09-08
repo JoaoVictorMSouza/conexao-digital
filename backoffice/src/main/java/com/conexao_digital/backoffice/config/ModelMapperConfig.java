@@ -15,6 +15,12 @@ public class ModelMapperConfig {
 
         modelMapper.addMappings(new UsuarioBackofficeEntityMap());
         modelMapper.addMappings(new UsuarioBackofficeDTOMap());
+        
+        modelMapper.addMappings(new ProdutoBackofficeEntityMap());
+        modelMapper.addMappings(new ProdutoBackofficeDTOMap());
+
+        modelMapper.addMappings(new ImagemProdutoBackofficeEntityMap());
+        modelMapper.addMappings(new ImagemProdutoBackofficeDTOMap());
 
         return modelMapper;
     }

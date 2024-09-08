@@ -6,6 +6,8 @@ public class ProdutoBackofficeDTO {
     private int quantidadeEstoque;
     private double preco;
     private boolean ativo;
+    private String descricaoDetalhada;
+    private double avaliacao;
 
     public int getId() {
         return id;
@@ -40,5 +42,19 @@ public class ProdutoBackofficeDTO {
     }
     public void setAtivo(boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public String getDescricaoDetalhada() {
+        return descricaoDetalhada;
+    }
+    public void setDescricaoDetalhada(String descricaoDetalhada) {
+        this.descricaoDetalhada = descricaoDetalhada;
+    }
+
+    public double getAvaliacao() {
+        return avaliacao;
+    }
+    public void setAvaliacao(double avaliacao) {
+        this.avaliacao = avaliacao;
     }
 }

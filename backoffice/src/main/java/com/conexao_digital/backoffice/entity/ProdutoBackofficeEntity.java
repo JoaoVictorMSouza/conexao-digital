@@ -1,9 +1,15 @@
 package com.conexao_digital.backoffice.entity;
 
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,12 +18,16 @@ public class ProdutoBackofficeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idProduto;
+    @Column(length = 200)
     private String dsNome;
     private double vlAvaliacao;
+    @Column(length = 2000)
     private String dsDetalhe;
     private double vlPreco;
     private int qtdEstoque;
     private boolean isAtivo;
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ImagemProdutoBackofficeEntity> imagens;
 
     public Integer getIdProduto() {
         return idProduto;
@@ -63,5 +73,12 @@ public class ProdutoBackofficeEntity {
     }
     public void setAtivo(boolean isAtivo) {
         this.isAtivo = isAtivo;
+    }
+
+    public List<ImagemProdutoBackofficeEntity> getImagens() {
+        return imagens;
+    }
+    public void setImagens(List<ImagemProdutoBackofficeEntity> imagens) {
+        this.imagens = imagens;
     }
 }
