@@ -11,11 +11,11 @@
     <div th:insert="~{fragments/header :: header}"></div>
     
     <main class="d-flex flex-grow-1 justify-content-center align-items-center">
-        <a>
+        <a th:href="@{/produto/listarProdutosBackoffice}">
             <div class="card text-center d-flex justify-content-center align-items-center user-card p-2">
                 <img src="/images/products-icon.png" class="card-img-top w-50" alt="ícone de produtos">
                 <div class="card-body">
-                    <a class="btn btn-primary">Produtos</a>
+                    <a th:href="@{/produto/listarProdutosBackoffice}" class="btn btn-primary">Produtos</a>
                 </div>
             </div>
         </a>
