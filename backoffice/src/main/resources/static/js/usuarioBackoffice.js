@@ -194,7 +194,16 @@ function filtrarUsuarios() {
         let cpf = document.getElementById("cpf").value;
         let senha = document.getElementById("senha").value;
         let confirmacaoSenha = document.getElementById("confirmacaoSenha").value;
-        let grupo = document.getElementById("grupo-usuario").value;
+
+        if (document.getElementById("grupo-usuario")) {
+            let grupo = document.getElementById("grupo-usuario").value;
+
+            if (grupo === "" || Number(grupo) <= 0){
+                abrirToastErro("Grupo é obrigatório.");
+                return false;
+            }
+        }
+
     
         if (nome === ""){
             abrirToastErro("Nome é obrigatório.");
@@ -211,11 +220,6 @@ function filtrarUsuarios() {
         }
     
         if ((senha !== "" || confirmacaoSenha !== "") && !validarSenha()){
-            return false;
-        }
-    
-        if (grupo === "" || Number(grupo) <= 0){
-            abrirToastErro("Grupo é obrigatório.");
             return false;
         }
     
@@ -253,7 +257,6 @@ function editarUsuarioBackOffice() {
 }
 
 function editarStatusUsuarioBackOffice(element) {
-    debugger;
     let usuario = {
         id: element.dataset.idusuario,
         ativo: element.checked

@@ -106,6 +106,7 @@ public class UsuarioService implements IUsuarioService {
 
         if ((usuarioBackofficeDTO.getSenha() != null && !usuarioBackofficeDTO.getSenha().trim().isEmpty()) || 
             (usuarioBackofficeDTO.getConfirmacaoSenha() != null && !usuarioBackofficeDTO.getConfirmacaoSenha().trim().isEmpty())) {
+
             this.validarSenha(usuarioBackofficeDTO.getSenha(), usuarioBackofficeDTO.getConfirmacaoSenha());
 
             // Encripta a senha
@@ -114,11 +115,17 @@ public class UsuarioService implements IUsuarioService {
             usuarioBackofficeEntity.setDsSenha(usuarioBackofficeDTO.getSenha());
         }
 
-        if (usuarioBackofficeDTO.getNome() != null && !usuarioBackofficeDTO.getNome().trim().isEmpty()) {
+        if (usuarioBackofficeDTO.getNome() != null && 
+            !usuarioBackofficeDTO.getNome().trim().isEmpty() && 
+            !usuarioBackofficeEntity.getDsNome().equals(usuarioBackofficeEntity.getDsNome())) {
+
             usuarioBackofficeEntity.setDsNome(usuarioBackofficeDTO.getNome()); 
         }
 
-        if (usuarioBackofficeDTO.getCpf() != null && !usuarioBackofficeDTO.getCpf().trim().isEmpty()) {
+        if (usuarioBackofficeDTO.getCpf() != null && 
+            !usuarioBackofficeDTO.getCpf().trim().isEmpty() &&
+            !usuarioBackofficeEntity.getDsCpf().equals(usuarioBackofficeDTO.getCpf())) {
+
             if (!CpfUtils.validarCPF(usuarioBackofficeDTO.getCpf())) {
                 throw new UsuarioBackofficeException("CPF inválido");
             }
@@ -126,7 +133,9 @@ public class UsuarioService implements IUsuarioService {
             usuarioBackofficeEntity.setDsCpf(usuarioBackofficeDTO.getCpf());
         }
 
-        if (usuarioBackofficeDTO.getIdUsuarioGrupo() != usuarioBackofficeEntity.getIdGrupo()) {
+        if (usuarioBackofficeDTO.getIdUsuarioGrupo() > 0 && 
+            usuarioBackofficeDTO.getIdUsuarioGrupo() != usuarioBackofficeEntity.getIdGrupo()) {
+
             usuarioBackofficeEntity.setIdGrupo(usuarioBackofficeDTO.getIdUsuarioGrupo());     
         }
 

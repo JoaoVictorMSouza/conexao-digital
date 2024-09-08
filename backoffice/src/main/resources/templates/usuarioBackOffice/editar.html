@@ -14,7 +14,7 @@
         <h1>Editar usuário BackOffice</h1>
         <form action="#" th:action="@{/usuario/editar}" th:object="${usuarioBackoffice}" method="post" class="w-25 mb-5" id="formulario-editar-usuario">
             <input type="hidden" th:field="*{id}" id="id-usuario" />
-            <div th:if="${usuarioLogado.id == usuarioBackoffice.id}">
+            <div>
                 <div class="form-group">
                     <label for="nome">Nome:</label>
                     <input type="text" class="form-control" id="nome" th:field="*{nome}" />
@@ -35,7 +35,7 @@
                 </div>
             </div>
             
-            <div class="form-group">
+            <div class="form-group" th:if="${usuarioLogado.id != usuarioBackoffice.id}">
                 <label for="grupo-usuario">Grupo:</label>
                 <select class="form-select" id="grupo-usuario" th:field="*{idUsuarioGrupo}">
                     <option value="-1">Selecione um grupo</option>
