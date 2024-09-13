@@ -12,7 +12,7 @@
 
     <main class="d-flex flex-grow-1 flex-column align-items-center col mt-5">
         <h1>Listar produtos BackOffice</h1>
-        <strong class="my-4">
+        <strong class="my-4" th:if="${usuarioLogado.grupo == 'ADMIN'}">
             <a th:href="@{/produto/criar}" class="btn btn-success">
                 +
             </a> 

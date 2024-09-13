@@ -1,6 +1,110 @@
+$(document).ready(function () {
+    $('#formulario-criar-produto').submit(async function(e) {
+        e.preventDefault();
+        let isInformacoesValidas =  validarInformacoesCriarProduto();
+        if (isInformacoesValidas) {
+            criarProdutoBackOffice();
+        }
+    });
+});
+
+function validarInformacoesCriarProduto(){
+    try {
+        fecharToast();
+
+        let nome = $("#nome").val();
+        let avaliacao = $("#avaliacao").val();
+        let descricao = $("#descricao-detalhada").val();
+        let preco = $("#preco").val();
+        let quantidade = $("#qtd-estoque").val();
+        
+        if (nome === ""){
+            abrirToastErro("Nome é obrigatório.");
+            return false;
+        }
+
+        if (nome.length > 200) {
+            abrirToastErro("Nome deve ter no máximo 200 caracteres.");
+            return false;
+        }
+
+        if (avaliacao < 0 || avaliacao > 5){
+            abrirToastErro("Avaliação deve ser um valor entre 0 e 5.");
+            return false;
+        }
+
+        if (descricao === ""){
+            abrirToastErro("Descrição é obrigatória.");
+            return false;
+        }
+
+        if (descricao.length > 2000) {
+            abrirToastErro("Descrição deve ter no máximo 2000 caracteres.");
+            return false;
+        }
+
+        if (preco < 0){
+            abrirToastErro("Preço pode ser um valor negativo.");
+            return false;
+        }
+
+        if (quantidade < 0){
+            abrirToastErro("Quantidade em estoque não pode ser um valor negativo.");
+            return false;
+        }
+    
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+function criarProdutoBackOffice() {
+    let formData = new FormData();
+
+    formData.append('nome', $("#nome").val());
+    formData.append('avaliacao', $("#avaliacao").val());
+    formData.append('descricaoDetalhada', $("#descricao-detalhada").val());
+    formData.append('preco', $("#preco").val());
+    formData.append('quantidadeEstoque', $("#qtd-estoque").val());
+    formData.append('ativo', $("#ativo").val());
+
+    let imagens = document.getElementById('imagens').files;
+    for (let i = 0; i < imagens.length; i++) {
+        formData.append('imagens', imagens[i]);
+    }
+
+    let ordenacaoImagens = $("#ordenacao-imagens").val();
+    formData.append('ordenacaoImagens', ordenacaoImagens);
+
+    $.ajax({
+        url: '/produto/criar',
+        type: 'POST',
+        data: formData,
+        contentType: false,  // Não defina o contentType, deixe o jQuery manipular isso
+        processData: false,  // Evita que o jQuery processe os dados, permitindo o envio do FormData
+        success: function(response) {
+            if (response) {
+                if (response.status === "OK") {
+                    window.location.href = "/produto/listarProdutosBackoffice";
+                } else {
+                    abrirToastErro(response.mensagem);
+                }
+            } else {
+                abrirToastErro("Erro ao inserir produto.");
+            }
+        },
+        error: function(xhr, status, error) {
+            if (xhr.responseJSON.mensagem) {
+                abrirToastErro(xhr.responseJSON.mensagem);
+            }
+        }
+    });
+}
+
 function filtrarProdutos() {
     const textoFiltro = document.getElementById('campoFiltro').value.toLowerCase();
-    const linhasUsuarios = document.querySelectorAll('.linha-usuario');
+    const linhasUsuarios = document.querySelectorAll('.linha-produto');
 
     linhasUsuarios.forEach(linha => {
         const nomeUsuario = linha.querySelector('.nome-produto').textContent.toLowerCase();

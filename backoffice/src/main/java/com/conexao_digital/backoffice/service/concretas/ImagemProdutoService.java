@@ -5,10 +5,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.UUID;
+import java.io.IOException;
+import java.util.Arrays;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.conexao_digital.backoffice.dto.ImagemProdutoBackofficeDTO;
 import com.conexao_digital.backoffice.entity.ImagemProdutoBackofficeEntity;
@@ -28,13 +31,14 @@ public class ImagemProdutoService implements IImagemProdutoService {
         this.modelMapper = modelMapper;
     }
 
-    private final String uploadDir = "src/main/resources/static/uploads/"; 
+    private final String UPLOADDIR = "src/main/resources/static/uploads/"; 
+    private final String EXTENCAO = ".jpg"; 
 
-    public void salvarImagem(Path caminhoImagem, byte[] imagem) {
+    private void salvarImagem(Path caminhoImagem, byte[] imagem) {
         try {
             // Criar o diretório se não existir
-            if (!Files.exists(Paths.get(uploadDir))) {
-                Files.createDirectories(Paths.get(uploadDir));
+            if (!Files.exists(Paths.get(this.UPLOADDIR))) {
+                Files.createDirectories(Paths.get(UPLOADDIR));
             }
 
             // Salvar a imagem no diretório
@@ -44,14 +48,9 @@ public class ImagemProdutoService implements IImagemProdutoService {
         }
     }
 
-    public Path retornarCaminhoImagem(String nomeImagem) {
-        Path caminhoImagem = Paths.get(uploadDir, nomeImagem);
-        return caminhoImagem;
-    }
-
-    public String gerarNomeImagem(String nomeProduto) {
+    private String gerarNomeImagem(String nomeProduto) {
         String dataAtual = LocalDate.now().toString();
-        String novoNome = UUID.randomUUID().toString() + "_" + nomeProduto + "_" + dataAtual;
+        String novoNome = nomeProduto + "_" + dataAtual + "_" + UUID.randomUUID().toString() + this.EXTENCAO;
         return novoNome;
     }
 
@@ -63,7 +62,7 @@ public class ImagemProdutoService implements IImagemProdutoService {
         return modelMapper.map(imagemprodutoBackofficeDTO, ImagemProdutoBackofficeEntity.class);
     }
 
-    public void salvarImagemBD(ImagemProdutoBackofficeDTO imagemProdutoBackofficeDTO, ProdutoBackofficeEntity produtoBackofficeEntity) {
+    private void salvarImagemBD(ImagemProdutoBackofficeDTO imagemProdutoBackofficeDTO, ProdutoBackofficeEntity produtoBackofficeEntity) {
         if (imagemProdutoBackofficeDTO.getCaminho() == null || imagemProdutoBackofficeDTO.getCaminho().isEmpty()) {
             throw new ImagemProdutoBackofficeException("Caminho da imagem não pode ser nulo ou vazio");
         }
@@ -81,5 +80,36 @@ public class ImagemProdutoService implements IImagemProdutoService {
         imagemProdutoBackofficeEntity.setProduto(produtoBackofficeEntity);
 
         this.imagemProdutoBackOfficeRepository.save(imagemProdutoBackofficeEntity);
+    }
+
+    public void salvarImagens(MultipartFile[] imagens, String ordenacaoImagens, ProdutoBackofficeEntity produtoBackofficeEntity) {
+        // Converter a string de ordem em um array de inteiros
+        String[] ordemArray = ordenacaoImagens.split(",");
+        int[] ordemIndices = Arrays.stream(ordemArray).mapToInt(Integer::parseInt).toArray();
+
+        for (int i = 0; i < ordemIndices.length; i++) {
+            int index = ordemIndices[i];
+            MultipartFile imagem = imagens[index];
+
+            String nomeImagem = this.gerarNomeImagem(produtoBackofficeEntity.getDsNome());
+            Path caminhoImagem = this.retornarCaminhoImagem(nomeImagem);
+
+            try {
+                this.salvarImagem(caminhoImagem, imagem.getBytes());
+            } catch (IOException e) {
+                throw new ImagemProdutoBackofficeException("Erro ao salvar a imagem");
+            }
+
+            ImagemProdutoBackofficeDTO imagemProduto = new ImagemProdutoBackofficeDTO();
+            imagemProduto.setNomeArquivo(nomeImagem);
+            imagemProduto.setCaminho(caminhoImagem.toString());
+            imagemProduto.setImagemPrincipal(i == 0); // Definir a imagem principal para a primeira imagem da lista
+            this.salvarImagemBD(imagemProduto, produtoBackofficeEntity);
+        }
+    }
+
+    public Path retornarCaminhoImagem(String nomeImagem) {
+        Path caminhoImagem = Paths.get(this.UPLOADDIR, nomeImagem);
+        return caminhoImagem;
     }
 }

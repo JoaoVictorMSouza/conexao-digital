@@ -1,11 +1,13 @@
 package com.conexao_digital.backoffice.service.interfaces;
 
 import java.util.List;
+
+import org.springframework.web.multipart.MultipartFile;
+
 import com.conexao_digital.backoffice.dto.ProdutoBackofficeDTO;
-import com.conexao_digital.backoffice.entity.ProdutoBackofficeEntity;
 
 public interface IProdutoService {
-    ProdutoBackofficeEntity criarProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO);
+    void criarProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO, MultipartFile[] imagens, String ordenacaoImagens);
     List<ProdutoBackofficeDTO> listarProdutosBackOffice();
     ProdutoBackofficeDTO buscarProdutoPorId(int id);
     void editarProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO);

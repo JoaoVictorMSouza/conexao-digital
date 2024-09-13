@@ -1,6 +1,7 @@
 package com.conexao_digital.backoffice.entity;
 
 import java.util.List;
+import java.util.Date;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -28,6 +29,7 @@ public class ProdutoBackofficeEntity {
     private boolean isAtivo;
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ImagemProdutoBackofficeEntity> imagens;
+    private Date dhCadastro;
 
     public Integer getIdProduto() {
         return idProduto;
@@ -80,5 +82,12 @@ public class ProdutoBackofficeEntity {
     }
     public void setImagens(List<ImagemProdutoBackofficeEntity> imagens) {
         this.imagens = imagens;
+    }
+
+    public Date getDhCadastro() {
+        return dhCadastro;
+    }
+    public void setDhCadastro(Date dhCadastro) {
+        this.dhCadastro = dhCadastro;
     }
 }

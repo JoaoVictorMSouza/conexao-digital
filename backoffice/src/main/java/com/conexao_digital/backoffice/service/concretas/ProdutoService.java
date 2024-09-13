@@ -1,29 +1,34 @@
 package com.conexao_digital.backoffice.service.concretas;
 
+import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.conexao_digital.backoffice.dto.ProdutoBackofficeDTO;
 import com.conexao_digital.backoffice.entity.ProdutoBackofficeEntity;
 import com.conexao_digital.backoffice.exception.ProdutoBackofficeException;
 import com.conexao_digital.backoffice.repository.interfaces.IProdutoBackOfficeRepository;
+import com.conexao_digital.backoffice.service.interfaces.IImagemProdutoService;
 import com.conexao_digital.backoffice.service.interfaces.IProdutoService;
 
 @Service
 public class ProdutoService implements IProdutoService {
     private IProdutoBackOfficeRepository produtoRepository;
+    private IImagemProdutoService imagemProdutoService;
     private ModelMapper modelMapper;
 
     @Autowired
-    public ProdutoService(IProdutoBackOfficeRepository iProdutoRepository, ModelMapper modelMapper) {
+    public ProdutoService(IProdutoBackOfficeRepository iProdutoRepository, ModelMapper modelMapper, IImagemProdutoService imagemProdutoService) {
         this.produtoRepository = iProdutoRepository;
         this.modelMapper = modelMapper;
+        this.imagemProdutoService = imagemProdutoService;
     }
 
-    public ProdutoBackofficeEntity criarProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO) {
+    public void criarProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO, MultipartFile[] imagens, String ordenacaoImagens) {
         if (produtoBackofficeDTO.getNome() == null || produtoBackofficeDTO.getNome().trim().isEmpty()) {
             throw new ProdutoBackofficeException("Nome do produto não pode ser vazio");
         }
@@ -50,7 +55,11 @@ public class ProdutoService implements IProdutoService {
 
         ProdutoBackofficeEntity produtoBackofficeEntity = this.mapearProdutoBackofficeDTOParaProdutoBackofficeEntity(produtoBackofficeDTO);
 
-        return produtoRepository.save(produtoBackofficeEntity);
+        produtoBackofficeEntity.setDhCadastro(new Date());
+
+        ProdutoBackofficeEntity produtoSalvo = produtoRepository.save(produtoBackofficeEntity);
+
+        imagemProdutoService.salvarImagens(imagens, ordenacaoImagens, produtoSalvo);
     }
 
     private ProdutoBackofficeDTO mapearProdutoBackofficeEntityParaProdutoBackofficeDTO(ProdutoBackofficeEntity produtoBackofficeEntity) {
@@ -65,6 +74,7 @@ public class ProdutoService implements IProdutoService {
         List<ProdutoBackofficeEntity> produtosBackofficeEntity = produtoRepository.findAll();
 
         List<ProdutoBackofficeDTO> listaProdutosBackofficeDTO = produtosBackofficeEntity.stream()
+                .sorted((produto1, produto2) -> produto1.getDhCadastro().compareTo(produto2.getDhCadastro()))
                 .map(produtoBackofficeEntity -> this.mapearProdutoBackofficeEntityParaProdutoBackofficeDTO(produtoBackofficeEntity))
                 .toList();
 

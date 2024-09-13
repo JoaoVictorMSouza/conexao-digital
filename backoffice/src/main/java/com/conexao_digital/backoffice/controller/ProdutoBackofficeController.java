@@ -1,13 +1,11 @@
 package com.conexao_digital.backoffice.controller;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.conexao_digital.backoffice.dto.ImagemProdutoBackofficeDTO;
 import com.conexao_digital.backoffice.dto.ProdutoBackofficeDTO;
 import com.conexao_digital.backoffice.dto.UsuarioLogadoDTO;
-import com.conexao_digital.backoffice.entity.ProdutoBackofficeEntity;
 import com.conexao_digital.backoffice.exception.ProdutoBackofficeException;
 import com.conexao_digital.backoffice.service.interfaces.IAutenticacaoService;
 import com.conexao_digital.backoffice.service.interfaces.IImagemProdutoService;
@@ -62,33 +58,14 @@ public class ProdutoBackofficeController {
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<Map<String, String>> criarUsuarioBackOffice(@ModelAttribute ProdutoBackofficeDTO produto,
+    public ResponseEntity<Map<String, String>> criarProdutoBackOffice(@ModelAttribute("produtoBackoffice") ProdutoBackofficeDTO produto,
                                 @RequestParam("imagens") MultipartFile[] imagens,
                                 @RequestParam("ordenacaoImagens") String ordenacaoImagens) {
         Map<String, String> response = new HashMap<>();
 
         try {
-            // Salvar o produto 
-            ProdutoBackofficeEntity produtoSalvo = this.produtoService.criarProdutoBackOffice(produto);
-
-            // Converter a string de ordem em um array de inteiros
-            String[] ordemArray = ordenacaoImagens.split(",");
-            int[] ordemIndices = Arrays.stream(ordemArray).mapToInt(Integer::parseInt).toArray();
-
-            for (int i = 0; i < ordemIndices.length; i++) {
-                int index = ordemIndices[i];
-                MultipartFile imagem = imagens[index];
-
-                String nomeImagem = this.imagemProdutoService.gerarNomeImagem(produto.getNome());
-                Path caminhoImagem = this.imagemProdutoService.retornarCaminhoImagem(nomeImagem);
-                this.imagemProdutoService.salvarImagem(caminhoImagem, imagem.getBytes());
-
-                ImagemProdutoBackofficeDTO imagemProduto = new ImagemProdutoBackofficeDTO();
-                imagemProduto.setNomeArquivo(nomeImagem);
-                imagemProduto.setCaminho(caminhoImagem.toString());
-                imagemProduto.setImagemPrincipal(i == 0); // Definir a imagem principal para a primeira imagem da lista
-                this.imagemProdutoService.salvarImagemBD(imagemProduto, produtoSalvo);
-            }
+            // Salvar o produto e imagens
+            this.produtoService.criarProdutoBackOffice(produto, imagens, ordenacaoImagens);
 
             response.put("status", "OK");
 
@@ -97,12 +74,7 @@ public class ProdutoBackofficeController {
             System.out.println(e.getMessage());
             response.put("status", "ERROR");
             response.put("mensagem", e.getMessage());
-            throw e;
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
-            response.put("status", "ERROR");
-            response.put("mensagem", "Erro ao criar o produto");
-            throw new ProdutoBackofficeException("Erro ao criar o produto");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response); 
         }
     }
 }
