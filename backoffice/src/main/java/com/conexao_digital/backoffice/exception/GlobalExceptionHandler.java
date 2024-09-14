@@ -11,8 +11,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleUsuarioBackofficeException(UsuarioBackofficeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(ProdutoBackofficeException.class)
     public ResponseEntity<String> handleProdutoBackofficeException(ProdutoBackofficeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    
+    @ExceptionHandler(ImagemProdutoBackofficeException.class)
+    public ResponseEntity<String> handleImagemProdutoBackofficeException(ImagemProdutoBackofficeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }

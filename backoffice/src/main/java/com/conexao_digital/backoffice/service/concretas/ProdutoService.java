@@ -62,7 +62,9 @@ public class ProdutoService implements IProdutoService {
 
         ProdutoBackofficeEntity produtoSalvo = produtoRepository.save(produtoBackofficeEntity);
 
-        imagemProdutoService.salvarImagens(imagens, ordenacaoImagens, produtoSalvo);
+        if (imagens != null && imagens.length > 0) {
+            imagemProdutoService.salvarImagens(imagens, ordenacaoImagens, produtoSalvo);
+        }
     }
 
     private ProdutoBackofficeDTO mapearProdutoBackofficeEntityParaProdutoBackofficeDTO(ProdutoBackofficeEntity produtoBackofficeEntity) {
@@ -98,8 +100,27 @@ public class ProdutoService implements IProdutoService {
         return this.mapearProdutoBackofficeEntityParaProdutoBackofficeDTO(produtoBackofficeEntity);
     }
 
-    public void editarProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO){
-        
+    public void editarProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO, MultipartFile[] imagens, String ordenacaoImagens, boolean isAdmin) {
+        ProdutoBackofficeEntity produtoBackofficeEntity = produtoRepository.findByIdProduto(produtoBackofficeDTO.getId());
+
+        if (produtoBackofficeEntity == null) {
+            throw new ProdutoBackofficeException("Produto não encontrado");
+        }
+
+        if (isAdmin) {
+            //TODO: FAZER ALTERAÇÕES DE ADMIN AQUI
+        }
+
+        if(produtoBackofficeDTO.getQuantidadeEstoque() > 0 && produtoBackofficeDTO.getQuantidadeEstoque() != produtoBackofficeEntity.getQtdEstoque()){
+            produtoBackofficeEntity.setQtdEstoque(produtoBackofficeDTO.getQuantidadeEstoque());
+        }
+
+        ProdutoBackofficeEntity produtoSalvo = produtoRepository.save(produtoBackofficeEntity);
+
+        //TODO: REALIZAR A EDICAO DAS IMAGENS
+        // if (imagens != null && imagens.length > 0) {
+        //     imagemProdutoService.editarImagens(imagens, ordenacaoImagens, produtoSalvo);
+        // }
     }
 
     public void editarStatusProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO) {

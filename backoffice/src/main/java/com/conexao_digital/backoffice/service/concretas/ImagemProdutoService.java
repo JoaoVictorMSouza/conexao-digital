@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +19,20 @@ import com.conexao_digital.backoffice.entity.ImagemProdutoBackofficeEntity;
 import com.conexao_digital.backoffice.entity.ProdutoBackofficeEntity;
 import com.conexao_digital.backoffice.exception.ImagemProdutoBackofficeException;
 import com.conexao_digital.backoffice.repository.interfaces.IImagemProdutoBackOfficeRepository;
+import com.conexao_digital.backoffice.repository.interfaces.IProdutoBackOfficeRepository;
 import com.conexao_digital.backoffice.service.interfaces.IImagemProdutoService;
 
 @Service
 public class ImagemProdutoService implements IImagemProdutoService {
     private IImagemProdutoBackOfficeRepository imagemProdutoBackOfficeRepository;
     private ModelMapper modelMapper;
+    private IProdutoBackOfficeRepository produtoBackOfficeRepository;
 
     @Autowired
-    public ImagemProdutoService(IImagemProdutoBackOfficeRepository iImagemProdutoBackOfficeRepository, ModelMapper modelMapper) {
+    public ImagemProdutoService(IImagemProdutoBackOfficeRepository iImagemProdutoBackOfficeRepository, ModelMapper modelMapper, IProdutoBackOfficeRepository produtoBackOfficeRepository) {
         this.imagemProdutoBackOfficeRepository = iImagemProdutoBackOfficeRepository;
         this.modelMapper = modelMapper;
+        this.produtoBackOfficeRepository = produtoBackOfficeRepository;
     }
 
     private final String UPLOADDIR = "src/main/resources/static/uploads/"; 
@@ -48,9 +52,9 @@ public class ImagemProdutoService implements IImagemProdutoService {
         }
     }
 
-    private String gerarNomeImagem(String nomeProduto) {
+    private String gerarNomeImagem(int idProduto) {
         String dataAtual = LocalDate.now().toString();
-        String novoNome = nomeProduto + "_" + dataAtual + "_" + UUID.randomUUID().toString() + this.EXTENCAO;
+        String novoNome = String.valueOf(idProduto) + "_" + dataAtual + "_" + UUID.randomUUID().toString() + this.EXTENCAO;
         return novoNome;
     }
 
@@ -91,7 +95,7 @@ public class ImagemProdutoService implements IImagemProdutoService {
             int index = ordemIndices[i];
             MultipartFile imagem = imagens[index];
 
-            String nomeImagem = this.gerarNomeImagem(produtoBackofficeEntity.getDsNome());
+            String nomeImagem = this.gerarNomeImagem(produtoBackofficeEntity.getIdProduto());
             Path caminhoImagem = this.retornarCaminhoImagem(nomeImagem);
 
             try {
@@ -111,5 +115,20 @@ public class ImagemProdutoService implements IImagemProdutoService {
     public Path retornarCaminhoImagem(String nomeImagem) {
         Path caminhoImagem = Paths.get(this.UPLOADDIR, nomeImagem);
         return caminhoImagem;
+    }
+
+    public List<ImagemProdutoBackofficeDTO> listarImagensPorProdutoId(int idProduto) {
+        ProdutoBackofficeEntity produtoBackofficeEntity = this.produtoBackOfficeRepository.findByIdProduto(idProduto);
+
+        if (produtoBackofficeEntity == null) {
+            throw new ImagemProdutoBackofficeException("Produto não encontrado");
+        }
+
+        List<ImagemProdutoBackofficeEntity> imagensProduto = this.imagemProdutoBackOfficeRepository.findByProduto(produtoBackofficeEntity);
+        return imagensProduto.stream().map(this::mapearImagemProdutoBackofficeEntityParaImagemProdutoBackofficeDTO).toList();
+    }
+
+    public void editarImagens(MultipartFile[] imagens, String ordenacaoImagens, ProdutoBackofficeEntity produtoBackofficeEntity) {
+        //TODO: FAZER REGRA DE EDICAO DE IMAGENS
     }
 }
