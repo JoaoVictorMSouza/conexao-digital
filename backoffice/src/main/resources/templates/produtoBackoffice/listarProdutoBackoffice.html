@@ -44,7 +44,7 @@
                     <td th:text="${produtoBackOffice.preco}">Preço</td>
                     <td>
                         <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" th:data-idProduto="${produtoBackOffice.id}" th:checked="${produtoBackOffice.ativo}">
+                            <input class="form-check-input" type="checkbox" th:id="'produto-status-' + ${produtoBackOffice.id}" th:data-idProduto="${produtoBackOffice.id}" th:checked="${produtoBackOffice.ativo}" onchange="abrirModalConfirmacaoAlteracaoStatus(this)">
                         </div>
                     </td>
                     <td>
@@ -65,6 +65,26 @@
         </div>
         <div class="line-breaker mt-5"></div>
         <a href="/home" class="btn btn-dark mt-3 w-25">Home</a>
+        <div class="toast-container p-3 bottom-0 end-0" th:insert="~{fragments/toastErro}"></div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="modal-confirmacao-alteracao-status" tabindex="-1" aria-labelledby="modal-confirmacao-alteracao-status" aria-hidden="true">
+            <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal-confirmacao-alteracao-status">Atenção</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Tem certeza que deseja alterar o status do produto?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Não</button>
+                    <button type="button" class="btn btn-danger" onclick="editarStatusProdutoBackOffice(this)">Sim</button>
+                </div>
+            </div>
+            </div>
+        </div>
     </main>
    
     <!-- Adicionando o Bootstrap -->
@@ -74,5 +94,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
     <!-- Adicionar o arquivo com as funções de validação da informações do usuário -->
     <script src="/js/produtoBackoffice.js"></script>
+    <!-- Adicionar o arquivo com as funções do toast -->
+    <script src="/js/toast.js"></script>
 </body>
 </html>

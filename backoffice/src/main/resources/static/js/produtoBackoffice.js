@@ -1,4 +1,27 @@
 $(document).ready(function () {
+    const precoInput = document.getElementById('preco');
+
+    precoInput.addEventListener('input', function () {
+        let value = precoInput.value;
+
+        // Remove caracteres não numéricos, exceto o ponto
+        value = value.replace(/[^\d.]/g, '');
+
+        // Mantém apenas a primeira ocorrência do ponto
+        const parts = value.split('.');
+        if (parts.length > 2) {
+            value = parts[0] + '.' + parts.slice(1).join('');
+        }
+
+        // Formata o número para ter no máximo duas casas decimais
+        const number = parseFloat(value);
+        if (!isNaN(number)) {
+            precoInput.value = number.toFixed(2);
+        }
+    });
+});
+
+$(document).ready(function () {
     $('#formulario-criar-produto').submit(async function(e) {
         e.preventDefault();
         let isInformacoesValidas =  validarInformacoesCriarProduto();
@@ -94,9 +117,9 @@ function criarProdutoBackOffice() {
                 abrirToastErro("Erro ao inserir produto.");
             }
         },
-        error: function(xhr, status, error) {
-            if (xhr.responseJSON.mensagem) {
-                abrirToastErro(xhr.responseJSON.mensagem);
+        error: function(response) {
+            if (response.responseText) {
+                abrirToastErro(response.responseText);
             }
         }
     });
@@ -173,3 +196,39 @@ function atualizarOrdenacaoImagens() {
     // Armazenar a ordem no campo oculto
     document.getElementById('ordenacao-imagens').value = order.join(',');
 }
+
+function abrirModalConfirmacaoAlteracaoStatus(element) {
+    let status = element.checked;
+    element.checked = !element.checked;
+    const elModal = document.getElementById('modal-confirmacao-alteracao-status');
+    elModal.dataset.idproduto = element.dataset.idproduto;
+    elModal.dataset.statusproduto = status;
+    const modal = new bootstrap.Modal(elModal)
+
+    modal.show()
+}
+
+function editarStatusProdutoBackOffice(element) {
+    const elModal = document.getElementById('modal-confirmacao-alteracao-status');
+
+    let produto = {
+        id: elModal.dataset.idproduto,
+        ativo: elModal.dataset.statusproduto
+    };
+
+    $.post("/produto/mudarStatus", produto, function(data) {
+        if (data) {
+            // let nomeInputStatusProduto = 'produto-status-' + data.idproduto
+            // const inputStatusProduto = document.getElementById(nomeInputStatusProduto);
+            // inputStatusProduto.checked = !inputStatusProduto.checked;
+            window.location.href = "/produto/listarProdutosBackoffice";
+        } else {
+            abrirToastErro("Erro ao editar status do produto.");
+        }
+    }).fail(function(data) {
+        if (data.responseText) {
+            abrirToastErro(data.responseText);
+        }
+    });
+}
+

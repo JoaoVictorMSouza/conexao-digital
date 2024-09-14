@@ -103,6 +103,14 @@ public class ProdutoService implements IProdutoService {
     }
 
     public void editarStatusProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO) {
-        
+        ProdutoBackofficeEntity produtoBackofficeEntity = produtoRepository.findByIdProduto(produtoBackofficeDTO.getId());
+
+        if (produtoBackofficeEntity == null) {
+            throw new ProdutoBackofficeException("Produto não encontrado");
+        }
+
+        produtoBackofficeEntity.setAtivo(produtoBackofficeDTO.isAtivo());
+
+        produtoRepository.save(produtoBackofficeEntity);
     }
 }

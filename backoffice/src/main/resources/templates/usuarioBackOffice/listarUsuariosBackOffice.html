@@ -52,6 +52,7 @@
         </table>
         <div class="line-breaker mt-5"></div>
         <a href="/home" class="btn btn-dark mt-3 w-25">Home</a>
+        <div class="toast-container p-3 bottom-0 end-0" th:insert="~{fragments/toastErro}"></div>
     </main>
    
     <!-- Adicionando o Bootstrap -->
@@ -61,5 +62,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>
     <!-- Adicionar o arquivo com as funções de validação da informações do usuário -->
     <script src="/js/usuarioBackoffice.js"></script>
+    <!-- Adicionar o arquivo com as funções do toast -->
+    <script src="/js/toast.js"></script>
 </body>
 </html>
