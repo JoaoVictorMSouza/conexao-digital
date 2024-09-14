@@ -5,8 +5,11 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
 import com.conexao_digital.backoffice.dto.ProdutoBackofficeDTO;
 import com.conexao_digital.backoffice.entity.ProdutoBackofficeEntity;
@@ -66,17 +69,21 @@ public class ProdutoService implements IProdutoService {
         return modelMapper.map(produtoBackofficeEntity, ProdutoBackofficeDTO.class);
     }
 
+    private ProdutoBackofficeDTO mapearProdutoBackofficeEntityParaPageProdutoBackofficeDTO(ProdutoBackofficeEntity produtoBackofficeEntity) {
+        return modelMapper.map(produtoBackofficeEntity, ProdutoBackofficeDTO.class);
+    }
+
     private ProdutoBackofficeEntity mapearProdutoBackofficeDTOParaProdutoBackofficeEntity(ProdutoBackofficeDTO produtoBackofficeDTO) {
         return modelMapper.map(produtoBackofficeDTO, ProdutoBackofficeEntity.class);
     }
 
-    public List<ProdutoBackofficeDTO> listarProdutosBackOffice() {
-        List<ProdutoBackofficeEntity> produtosBackofficeEntity = produtoRepository.findAll();
+    public Page<ProdutoBackofficeDTO> listarProdutosBackOffice(int pagina, int quantidade) {
+        PageRequest pageRequest = PageRequest.of(pagina, quantidade, Sort.by(Sort.Direction.DESC, "dhCadastro"));
 
-        List<ProdutoBackofficeDTO> listaProdutosBackofficeDTO = produtosBackofficeEntity.stream()
-                .sorted((produto1, produto2) -> produto1.getDhCadastro().compareTo(produto2.getDhCadastro()))
-                .map(produtoBackofficeEntity -> this.mapearProdutoBackofficeEntityParaProdutoBackofficeDTO(produtoBackofficeEntity))
-                .toList();
+        Page<ProdutoBackofficeEntity> produtosBackofficeEntity = produtoRepository.findAll(pageRequest);
+
+        Page<ProdutoBackofficeDTO> listaProdutosBackofficeDTO = produtosBackofficeEntity
+                .map(this::mapearProdutoBackofficeEntityParaProdutoBackofficeDTO);
 
         return listaProdutosBackofficeDTO;
     }

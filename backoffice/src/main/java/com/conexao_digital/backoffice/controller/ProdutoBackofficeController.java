@@ -1,7 +1,6 @@
 package com.conexao_digital.backoffice.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.domain.Page;
 
 import com.conexao_digital.backoffice.dto.ProdutoBackofficeDTO;
 import com.conexao_digital.backoffice.dto.UsuarioLogadoDTO;
@@ -38,11 +38,13 @@ public class ProdutoBackofficeController {
     }
 
     @GetMapping("/listarProdutosBackoffice")
-    public String listarProdutoBackOffice(Model model) {
+    public String listarProdutoBackOffice(
+            Model model,
+            @RequestParam(defaultValue = "0") int page) {
         UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
         model.addAttribute("usuarioLogado", usuarioLogado);
 
-        List<ProdutoBackofficeDTO> listaProdutosBackofficeDTO = this.produtoService.listarProdutosBackOffice();
+        Page<ProdutoBackofficeDTO> listaProdutosBackofficeDTO = produtoService.listarProdutosBackOffice(page, 10);
         model.addAttribute("listaProdutosBackoffice", listaProdutosBackofficeDTO);
         return "produtoBackoffice/listarProdutoBackoffice";
     }

@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="produtoBackOffice : ${listaProdutosBackoffice}" class="linha-produto">
+                <tr th:each="produtoBackOffice : ${listaProdutosBackoffice.getContent()}" class="linha-produto">
                     <td th:text="${produtoBackOffice.id}">Código produto</td>
                     <td th:text="${produtoBackOffice.nome}" class="nome-produto">Nome</td>
                     <td th:text="${produtoBackOffice.quantidadeEstoque}">Qtd. Estoque</td>
@@ -56,6 +56,13 @@
                 </tr>
               </tbody>
         </table>
+        <div>
+            <span th:text="'Página ' + ${listaProdutosBackoffice.number + 1} + ' de ' + ${listaProdutosBackoffice.totalPages}"></span>
+        </div>
+        <div>
+            <a th:if="${listaProdutosBackoffice.hasPrevious()}" th:href="@{/produto/listarProdutosBackoffice(page=${listaProdutosBackoffice.number - 1})}">Anterior</a>
+            <a th:if="${listaProdutosBackoffice.hasNext()}" th:href="@{/produto/listarProdutosBackoffice(page=${listaProdutosBackoffice.number + 1})}">Próxima</a>
+        </div>
         <div class="line-breaker mt-5"></div>
         <a href="/home" class="btn btn-dark mt-3 w-25">Home</a>
     </main>
