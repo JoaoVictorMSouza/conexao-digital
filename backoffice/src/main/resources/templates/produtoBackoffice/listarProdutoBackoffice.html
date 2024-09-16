@@ -51,7 +51,7 @@
                         <a th:href="@{'/produto/editar/' + ${produtoBackOffice.id}}">Editar</a>
                     </td>
                     <td>
-                        <a th:href="@{'/produto/editar/' + ${produtoBackOffice.id}}">Visualizar</a>
+                        <a th:if="${usuarioLogado.grupo == 'ADMIN'}" th:href="@{'/produto/visualizar/' + ${produtoBackOffice.id}}">Visualizar</a>
                     </td>
                 </tr>
               </tbody>

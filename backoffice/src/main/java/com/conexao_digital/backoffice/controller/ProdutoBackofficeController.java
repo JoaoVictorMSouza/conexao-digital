@@ -136,4 +136,18 @@ public class ProdutoBackofficeController {
             throw e;
         }
     }
+
+    @GetMapping("/visualizar/{id}")
+    public String visualizarProdutoBackOffice(@PathVariable("id") int id, Model model) {
+        UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarioLogado);
+
+        ProdutoBackofficeDTO produtoBackofficeDTO = this.produtoService.buscarProdutoPorId(id);
+        model.addAttribute("produtoBackoffice", produtoBackofficeDTO);
+        
+        List<ImagemProdutoBackofficeDTO> listaImagens = this.imagemProdutoService.listarImagensPorProdutoId(produtoBackofficeDTO.getId());
+        model.addAttribute("imagensProdutoBackoffice", listaImagens);
+
+        return "produtoBackoffice/visualizar";
+    }
 }

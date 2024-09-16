@@ -125,7 +125,12 @@ public class ImagemProdutoService implements IImagemProdutoService {
         }
 
         List<ImagemProdutoBackofficeEntity> imagensProduto = this.imagemProdutoBackOfficeRepository.findByProduto(produtoBackofficeEntity);
-        return imagensProduto.stream().map(this::mapearImagemProdutoBackofficeEntityParaImagemProdutoBackofficeDTO).toList();
+        List<ImagemProdutoBackofficeDTO> imagensProdutoDTO = imagensProduto.stream()
+            .sorted((img1, img2) -> Boolean.compare(img2.isImagemPrincipal(), img1.isImagemPrincipal()))
+            .map(this::mapearImagemProdutoBackofficeEntityParaImagemProdutoBackofficeDTO)
+            .toList();
+            
+        return imagensProdutoDTO;
     }
 
     public void editarImagens(MultipartFile[] imagens, String ordenacaoImagens, ProdutoBackofficeEntity produtoBackofficeEntity) {
