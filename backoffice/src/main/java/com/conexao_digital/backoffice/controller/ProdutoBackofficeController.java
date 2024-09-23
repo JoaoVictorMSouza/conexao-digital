@@ -41,9 +41,7 @@ public class ProdutoBackofficeController {
     }
 
     @GetMapping("/listarProdutosBackoffice")
-    public String listarProdutoBackOffice(
-            Model model,
-            @RequestParam(defaultValue = "0") int page) {
+    public String listarProdutoBackOffice(Model model, @RequestParam(defaultValue = "0") int page) {
         UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
         model.addAttribute("usuarioLogado", usuarioLogado);
 

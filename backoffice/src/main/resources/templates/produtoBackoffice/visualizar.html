@@ -24,10 +24,10 @@
                     </div>
                     <div class="carousel-inner">
                         <div th:if="${imagem.imagemPrincipal}" th:each="imagem : ${imagensProdutoBackoffice}" class="carousel-item active text-center">
-                            <img class="imagens-produto" th:src="'/uploads/' + ${imagem.nomeArquivo}">
+                            <img class="imagens-produto" th:src="@{/imagem/{filename}(filename=${imagem.nomeArquivo})}" alt="Imagem do Produto">
                         </div>
                         <div th:unless="${imagem.imagemPrincipal}" th:each="imagem : ${imagensProdutoBackoffice}" class="carousel-item text-center">
-                            <img class="imagens-produto" th:src="'/uploads/' + ${imagem.nomeArquivo}">
+                            <img class="imagens-produto" th:src="@{/imagem/{filename}(filename=${imagem.nomeArquivo})}" alt="Imagem do Produto">
                         </div>
                     </div>
                     <button class="carousel-control-prev" type="button" data-bs-target="#carrosel-imagens" data-bs-slide="prev">

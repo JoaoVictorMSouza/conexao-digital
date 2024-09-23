@@ -11,6 +11,7 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +36,7 @@ public class ImagemProdutoService implements IImagemProdutoService {
         this.produtoBackOfficeRepository = produtoBackOfficeRepository;
     }
 
-    private final String UPLOADDIR = "src/main/resources/static/uploads/"; 
+    private final String UPLOADDIR =  System.getProperty("user.home") + "/ecommerce/images"; 
     private final String EXTENCAO = ".jpg"; 
 
     private void salvarImagem(Path caminhoImagem, byte[] imagem) {
@@ -135,5 +136,9 @@ public class ImagemProdutoService implements IImagemProdutoService {
 
     public void editarImagens(MultipartFile[] imagens, String ordenacaoImagens, ProdutoBackofficeEntity produtoBackofficeEntity) {
         //TODO: FAZER REGRA DE EDICAO DE IMAGENS
+    }
+
+    public String retornarUploadDir() {
+        return this.UPLOADDIR;
     }
 }

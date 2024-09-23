@@ -13,4 +13,5 @@ public interface IImagemProdutoService {
     void salvarImagens(MultipartFile[] imagens, String ordenacaoImagens, ProdutoBackofficeEntity produtoBackofficeEntity);
     List<ImagemProdutoBackofficeDTO> listarImagensPorProdutoId(int produtoId);
     void editarImagens(MultipartFile[] imagens, String ordenacaoImagens, ProdutoBackofficeEntity produtoBackofficeEntity);
+    String retornarUploadDir();
 }
