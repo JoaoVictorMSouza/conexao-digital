@@ -1,0 +1,10 @@
+.banners-home{
+    max-height: 550px;
+    width: 100%;
+}
+
+.carousel-item img {
+    max-height: 550px;
+    width: 100%;
+    object-fit: cover;
+}

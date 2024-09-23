@@ -1,0 +1,79 @@
+# Arquivos e diretórios do sistema operacional
+.DS_Store
+Thumbs.db
+
+# Diretório de dependências do Maven
+/target/
+
+# Arquivos de logs
+*.log
+logs/
+
+# Arquivos de configuração temporários
+*.tmp
+*.swp
+
+# Arquivos de configuração específicos do IDE
+/.classpath
+/.project
+/.settings/
+/.idea/
+/*.iml
+
+# Arquivos gerados pelo Visual Studio Code
+.vscode/
+
+# Arquivos e diretórios do IntelliJ IDEA
+/.idea/
+/*.iml
+/out/
+
+# Arquivos específicos do Eclipse
+/.settings/
+/.classpath
+/.project
+/.metadata/
+/bin/
+
+# Arquivos de teste e cobertura de teste
+/test-output/
+/surefire-reports/
+/jacoco.exec
+
+# Banco de dados H2 em modo de arquivo
+*.h2.db
+*.mv.db
+*.trace.db
+
+# Arquivos de compilação e dependências locais
+.mvn/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/mvnw*
+!**/src/main/**/mvnw.cmd
+
+# Arquivos de configuração de ambiente
+.env
+*.env
+
+# Arquivos de cache e dados temporários
+/tmp/
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# Arquivos de cobertura de código (gerados por ferramentas de cobertura)
+coverage/
+*.lcov
+
+# Arquivos de execução e de aplicativos locais
+*.jar
+*.war
+*.ear
+
+# Arquivos de biblioteca e build gerados
+lib/
+*.class
+
+# Arquivos de imagens que foram salvas localmente
+/src/main/resources/static/uploads/*
