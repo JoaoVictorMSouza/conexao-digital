@@ -1,0 +1,33 @@
+.line-breaker{
+    background-color: #a9a9a9;
+    height: 1px;
+    width: 100%;
+}
+
+.resumo-pedido-container {
+    background-color: #fddb9385;
+}
+
+.input-qtd {
+    border: none;
+}
+
+.qtd {
+    border: 2px solid #e3e3e3;
+    width: min-content;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}
+
+.img-produto {
+    max-width: 100px;
+}
