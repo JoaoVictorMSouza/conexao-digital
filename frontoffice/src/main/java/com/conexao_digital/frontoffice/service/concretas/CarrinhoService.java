@@ -29,6 +29,14 @@ public class CarrinhoService implements ICarrinhoService {
         this.modelMapper = modelMapper;
     }
 
+    public void removerProduto(CarrinhoDTO carrinhoDTO, int idProduto) {
+        if (!(carrinhoDTO.getItens().stream().anyMatch(item -> item.getProduto().getId() == idProduto))) {
+            throw new CarrinhoFrontofficeException("Produto não encontrado");
+        }
+        carrinhoDTO.getItens().removeIf(item -> item.getProduto().getId() == idProduto);
+        this.calcularCarrinho(carrinhoDTO);
+    }
+
     public void adicionarProduto(CarrinhoDTO carrinhoDTO, int idProduto) {
         ProdutoBackofficeEntity produto = produtoBackOfficeRepository.findByIdProduto(idProduto);
 

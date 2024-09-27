@@ -42,6 +42,13 @@ public class CarrinhoController {
         return "redirect:/carrinho";
     }
 
+    @PostMapping("/remover/{idProduto}")
+    public String removerProduto(@ModelAttribute("carrinho") CarrinhoDTO carrinho,
+                                 @PathVariable int idProduto) {
+        carrinhoService.removerProduto(carrinho, idProduto);
+        return "redirect:/carrinho";
+    }
+
     @PostMapping("/atualizarQuantidade/{idProduto}/{quantidade}")
     public String atualizarQuantidade(@ModelAttribute("carrinho") CarrinhoDTO carrinho,
                                  @PathVariable int idProduto, 
