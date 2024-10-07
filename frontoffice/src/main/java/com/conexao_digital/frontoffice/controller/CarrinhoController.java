@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.conexao_digital.frontoffice.dto.CarrinhoDTO;
+import com.conexao_digital.frontoffice.dto.UsuarioLogadoDTO;
+import com.conexao_digital.frontoffice.service.interfaces.IAutenticacaoService;
 import com.conexao_digital.frontoffice.service.interfaces.ICarrinhoService;
 
 @Controller
@@ -18,10 +20,12 @@ import com.conexao_digital.frontoffice.service.interfaces.ICarrinhoService;
 @SessionAttributes("carrinho")
 public class CarrinhoController {
     private ICarrinhoService carrinhoService;
+    private IAutenticacaoService autenticacaoService;
 
     @Autowired
-    public CarrinhoController(ICarrinhoService carrinhoService) {
+    public CarrinhoController(ICarrinhoService carrinhoService, IAutenticacaoService autenticacaoService) {
         this.carrinhoService = carrinhoService;
+        this.autenticacaoService = autenticacaoService;
     }
 
     @ModelAttribute("carrinho")
@@ -31,6 +35,8 @@ public class CarrinhoController {
 
     @GetMapping
     public String mostrarCarrinho(@ModelAttribute("carrinho") CarrinhoDTO carrinho, Model model) {
+        UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarioLogado);
         model.addAttribute("carrinho", carrinho);
         return "carrinho/carrinho";
     }

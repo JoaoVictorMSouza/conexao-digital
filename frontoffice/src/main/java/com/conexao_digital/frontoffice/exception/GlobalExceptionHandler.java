@@ -21,4 +21,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleCarrinhoFrontofficeException(CarrinhoFrontofficeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UsuarioFrontofficeException.class)
+    public ResponseEntity<String> UsuarioFrontofficeException(UsuarioFrontofficeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.conexao_digital.frontoffice.dto.ImagemProdutoFrontofficeDTO;
 import com.conexao_digital.frontoffice.dto.ProdutoFrontofficeDTO;
+import com.conexao_digital.frontoffice.dto.UsuarioLogadoDTO;
+import com.conexao_digital.frontoffice.service.interfaces.IAutenticacaoService;
 import com.conexao_digital.frontoffice.service.interfaces.ICarrinhoService;
 import com.conexao_digital.frontoffice.service.interfaces.IImagemProdutoService;
 import com.conexao_digital.frontoffice.service.interfaces.IProdutoService;
@@ -21,12 +23,14 @@ public class HomeController {
     private IProdutoService produtoService;
     private IImagemProdutoService imagemProdutoService;
     private ICarrinhoService carrinhoService;
+    private IAutenticacaoService autenticacaoService;
     
     @Autowired
-    public HomeController(IProdutoService iprodutoService, IImagemProdutoService iImagemProdutoService, ICarrinhoService carrinhoService) {
+    public HomeController(IProdutoService iprodutoService, IImagemProdutoService iImagemProdutoService, ICarrinhoService carrinhoService, IAutenticacaoService autenticacaoService) {
         this.produtoService = iprodutoService;
         this.imagemProdutoService = iImagemProdutoService;
         this.carrinhoService = carrinhoService;
+        this.autenticacaoService = autenticacaoService;
     }
 
     @GetMapping("/")
@@ -45,6 +49,9 @@ public class HomeController {
             }
         }
 
+        UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarioLogado);
+        
         model.addAttribute("listaProdutosFrontoffice", listaProdutosFrontofficeDTO);
         model.addAttribute("carrinho", this.carrinhoService.getCarrinho());
 
