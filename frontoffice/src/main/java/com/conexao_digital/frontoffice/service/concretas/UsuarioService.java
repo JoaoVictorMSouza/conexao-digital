@@ -99,4 +99,55 @@ public class UsuarioService implements IUsuarioService {
 
         return false;
     }
+
+    public UsuarioFrontofficeDTO buscarUsuarioFrontOfficePorId(int id) {
+        UsuarioFrontofficeEntity usuarioFrontofficeEntity = usuarioRepository.findByIdUsuario(id);
+
+        if (usuarioFrontofficeEntity == null) {
+            throw new UsuarioFrontofficeException("Usuário não encontrado");
+        }
+
+        return this.mapearUsuarioFrontofficeEntityParaUsuarioFrontofficeDTO(usuarioFrontofficeEntity);
+    }
+
+    public void editarUsuarioFrontOffice(UsuarioFrontofficeDTO usuarioFrontofficeDTO){
+        UsuarioFrontofficeEntity usuarioFrontofficeEntity = usuarioRepository.findByIdUsuario(usuarioFrontofficeDTO.getId());
+
+        if (usuarioFrontofficeEntity == null) {
+            throw new UsuarioFrontofficeException("Usuário não encontrado");
+        }
+
+        if ((usuarioFrontofficeDTO.getSenha() != null && !usuarioFrontofficeDTO.getSenha().trim().isEmpty()) || 
+            (usuarioFrontofficeDTO.getConfirmacaoSenha() != null && !usuarioFrontofficeDTO.getConfirmacaoSenha().trim().isEmpty())) {
+
+            this.validarSenha(usuarioFrontofficeDTO.getSenha(), usuarioFrontofficeDTO.getConfirmacaoSenha());
+
+            // Encripta a senha
+            String senhaEncriptada = senhaEncoder.encode(usuarioFrontofficeDTO.getSenha());
+            usuarioFrontofficeDTO.setSenha(senhaEncriptada);
+            usuarioFrontofficeEntity.setDsSenha(usuarioFrontofficeDTO.getSenha());
+        }
+
+        if (usuarioFrontofficeDTO.getNome() != null && 
+            !usuarioFrontofficeDTO.getNome().trim().isEmpty() && 
+            !usuarioFrontofficeEntity.getDsNome().equals(usuarioFrontofficeDTO.getNome())) {
+
+            this.validarNome(usuarioFrontofficeDTO.getNome());
+            usuarioFrontofficeEntity.setDsNome(usuarioFrontofficeDTO.getNome()); 
+        }
+
+        if (usuarioFrontofficeDTO.getIdGeneroUsuario() > 0 && 
+            usuarioFrontofficeDTO.getIdGeneroUsuario() != usuarioFrontofficeEntity.getIdGenero()) {
+
+            usuarioFrontofficeEntity.setIdGenero(usuarioFrontofficeDTO.getIdGeneroUsuario());     
+        }
+
+        if (usuarioFrontofficeDTO.getDataNascimento() != null && 
+            !usuarioFrontofficeDTO.getDataNascimento().equals(usuarioFrontofficeEntity.getDtNascimento())) {
+
+            usuarioFrontofficeEntity.setDtNascimento(usuarioFrontofficeDTO.getDataNascimento());     
+    }
+
+        usuarioRepository.save(usuarioFrontofficeEntity);
+    }
 }

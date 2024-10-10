@@ -2,16 +2,22 @@ $(document).ready(function(){
     $('#cpf').mask('000.000.000-00');
 });
 
-$(document).ready(function(){
-    $('.cep').mask('00000-000');
-});
-
 $(document).ready(function () {
     $('#formulario-criar-usuario').submit(async function(e) {
         e.preventDefault();
         let isInformacoesValidas = await validarInformacoesCriarUsuario();
         if (isInformacoesValidas) {
             criarUsuarioFrontoffice();
+        }
+    });
+});
+
+$(document).ready(function () {
+    $('#formulario-editar-usuario').submit(async function(e) {
+        e.preventDefault();
+        let isInformacoesValidas = await validarInformacoesEditarUsuario();
+        if (isInformacoesValidas) {
+            editarUsuarioFrontoffice();
         }
     });
 });
@@ -100,86 +106,48 @@ async function validarInformacoesCriarUsuario(){
     }
 }
 
-function validarEnderecoFaturamento() {
-    let cepFaturamento = document.getElementById("cep-faturamento").value;
-    let logradouroFaturamento = document.getElementById("logradouro-faturamento").value;
-    let numeroFaturamento = document.getElementById("numero-faturamento").value;
-    let bairroFaturamento = document.getElementById("bairro-faturamento").value;
-    let cidadeFaturamento = document.getElementById("cidade-faturamento").value;
-    let ufFaturamento = document.getElementById("uf-faturamento").value;
+async function validarInformacoesEditarUsuario(){
+    try {
+        fecharToast();
 
-    if (cepFaturamento === "") {
-        abrirToastErro("CEP de faturamento é obrigatório.");
+        let nome = document.getElementById("nome").value;
+        let senha = document.getElementById("senha").value;
+        let confirmacaoSenha = document.getElementById("confirmacaoSenha").value;
+        let genero = document.getElementById("genero-usuario").value;
+        let dataNascimento = document.getElementById("data-nascimento").value;
+    
+        if (nome === ""){
+            abrirToastErro("Nome é obrigatório.");
+            return false;
+        }
+    
+        if ((senha !== "" || confirmacaoSenha !== "") && !validarSenha()){
+            return false;
+        }
+    
+        if (genero === "" || Number(genero) <= 0){
+            abrirToastErro("Gênero é obrigatório.");
+            return false;
+        }
+
+        if (dataNascimento === ""){
+            abrirToastErro("Data de nascimento é obrigatória.");
+            return false;
+        }
+
+        if (stringToDate(dataNascimento) > new Date()) {
+            abrirToastErro("Data de nascimento inválida.");
+            return false;
+        }
+
+        if (!validarNome()) {
+            return false;
+        }
+    
+        return true;
+    } catch (error) {
         return false;
     }
-
-    if (logradouroFaturamento === "") {
-        abrirToastErro("Logradouro de faturamento é obrigatório.");
-        return false;
-    }
-
-    if (numeroFaturamento === "") {
-        abrirToastErro("Número de faturamento é obrigatório.");
-        return false;
-    }
-
-    if (bairroFaturamento === "") {
-        abrirToastErro("Bairro de faturamento é obrigatório.");
-        return false;
-    }
-
-    if (cidadeFaturamento === "") {
-        abrirToastErro("Cidade de faturamento é obrigatório.");
-        return false;
-    }
-
-    if (ufFaturamento === "") {
-        abrirToastErro("UF de faturamento é obrigatório.");
-        return false;
-    }
-
-    return true;
-}
-
-function validarEnderecoEntrega() {
-    let cepEntrega = document.getElementById("cep-entrega").value;
-    let logradouroEntrega = document.getElementById("logradouro-entrega").value;
-    let numeroEntrega = document.getElementById("numero-entrega").value;
-    let bairroEntrega = document.getElementById("bairro-entrega").value;
-    let cidadeEntrega = document.getElementById("cidade-entrega").value;
-    let ufEntrega = document.getElementById("uf-entrega").value;
-
-    if (cepEntrega === "") {
-        abrirToastErro("CEP de entrega é obrigatório.");
-        return false;
-    }
-
-    if (logradouroEntrega === "") {
-        abrirToastErro("Logradouro de entrega é obrigatório.");
-        return false;
-    }
-
-    if (numeroEntrega === "") {
-        abrirToastErro("Número de entrega é obrigatório.");
-        return false;
-    }
-
-    if (bairroEntrega === "") {
-        abrirToastErro("Bairro de entrega é obrigatório.");
-        return false;
-    }
-
-    if (cidadeEntrega === "") {
-        abrirToastErro("Cidade de entrega é obrigatório.");
-        return false;
-    }
-
-    if (ufEntrega === "") {
-        abrirToastErro("UF de entrega é obrigatório.");
-        return false;
-    }
-
-    return true;
 }
 
 function validarCPF(numeroCpf) {
@@ -302,59 +270,31 @@ function criarUsuarioFrontoffice() {
     });
 }
 
-async function consultarCepEntrega() {
-    let cep = document.getElementById("cep-entrega").value;
-    if (cep.length === 9) {
-        let endereco = await consultarCep(cep);
-        if (endereco) {
-            document.getElementById("logradouro-entrega").value = endereco.logradouro;
-            document.getElementById("bairro-entrega").value = endereco.bairro;
-            document.getElementById("cidade-entrega").value = endereco.localidade;
-            document.getElementById("uf-entrega").value = endereco.uf;
-        }
+function editarUsuarioFrontoffice() {
+    let usuario = {
+        id: $("#id-usuario").val(),
+        nome: $("#nome").val(),
+        senha: $("#senha").val(),
+        confirmacaoSenha: $("#confirmacaoSenha").val(),
+        idGeneroUsuario: $("#genero-usuario").val(),
+        dataNascimento: stringToDate($("#data-nascimento").val())
     }
-}
 
-async function consultarCepFaturamento() {
-    let cep = document.getElementById("cep-faturamento").value;
-    if (cep.length === 9) {
-        let endereco = await consultarCep(cep);
-        if (endereco) {
-            document.getElementById("logradouro-faturamento").value = endereco.logradouro;
-            document.getElementById("bairro-faturamento").value = endereco.bairro;
-            document.getElementById("cidade-faturamento").value = endereco.localidade;
-            document.getElementById("uf-faturamento").value = endereco.uf;
-        }
-    }
-}
-
-async function consultarCepEntrega() {
-    let cep = document.getElementById("cep-entrega").value;
-    if (cep.length === 9) {
-        let endereco = await consultarCep(cep);
-        if (endereco) {
-            document.getElementById("logradouro-entrega").value = endereco.logradouro;
-            document.getElementById("bairro-entrega").value = endereco.bairro;
-            document.getElementById("cidade-entrega").value = endereco.localidade;
-            document.getElementById("uf-entrega").value = endereco.uf;
-        }
-    }
-}
-
-function consultarCep(cep) {
-    return fetch(`https://viacep.com.br/ws/${cep}/json/`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.erro) {
-                abrirToastErro('CEP não encontrado.');
-                return undefined;
+    $.post("/usuario/editar", usuario, function(data) {
+        if (data) {
+            if (data.status === "OK") {
+                window.location.href = "/usuario/editar/" + usuario.id;
+            } else {
+                abrirToastErro(data.mensagem);
             }
-            return data;
-        })
-        .catch(error => {
-            abrirToastErro('Erro ao consultar o CEP.');
-            return undefined;
-        });
+        } else {
+            abrirToastErro("Erro ao editar usuário.");
+        }
+    }).fail(function(data) {
+        if (data.responseText) {
+            abrirToastErro(data.responseText);
+        }
+    });
 }
 
 async function inserirMesmoEndereco(element) {
@@ -393,13 +333,6 @@ async function inserirMesmoEndereco(element) {
 
         }
     }
-}
-
-function habilitarCamposEnderecoEntrega() {
-    document.getElementById("cep-entrega").disabled = false;
-    document.getElementById("complemento-entrega").disabled = false;
-    document.getElementById("numero-entrega").disabled = false;
-    document.getElementById("btn-buscar-frete-entrega").disabled = false;
 }
 
 function validarNome() {

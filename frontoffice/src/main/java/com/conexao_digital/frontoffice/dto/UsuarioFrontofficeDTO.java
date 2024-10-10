@@ -1,6 +1,9 @@
 package com.conexao_digital.frontoffice.dto;
 
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,6 +20,8 @@ public class UsuarioFrontofficeDTO {
     private GeneroEnum generoEnum;
     private List<EnderecoDTO> enderecos;
     private Date dataNascimento;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date dataNascimentoFront;
 
     public UsuarioFrontofficeDTO() {
         this.enderecos = new ArrayList<>();
@@ -94,5 +99,10 @@ public class UsuarioFrontofficeDTO {
     }
     public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
+        this.dataNascimentoFront = dataNascimento;
+    }
+
+    public Date getDataNascimentoFront() {
+        return dataNascimentoFront;
     }
 }
