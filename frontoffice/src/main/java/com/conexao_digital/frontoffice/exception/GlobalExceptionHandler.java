@@ -26,4 +26,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> UsuarioFrontofficeException(UsuarioFrontofficeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EnderecoFrontofficeException.class)
+    public ResponseEntity<String> EnderecoFrontofficeException(EnderecoFrontofficeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

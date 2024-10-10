@@ -14,6 +14,7 @@ public class EnderecoDTO {
     private boolean padrao;
     private EnderecoTipoEnum tipoEndereco;
     private int idTipoEndereco;
+    private int idUsuario;
 
     public int getIdEndereco() {
         return idEndereco;
@@ -94,5 +95,12 @@ public class EnderecoDTO {
     public void setIdTipoEndereco(int idTipoEndereco) {
         this.idTipoEndereco = idTipoEndereco;
         this.setTipoEnderecoById(idTipoEndereco);
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
     }
 }

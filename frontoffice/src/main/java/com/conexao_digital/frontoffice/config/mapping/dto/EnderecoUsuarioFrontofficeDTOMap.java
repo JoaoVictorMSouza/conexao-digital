@@ -17,5 +17,6 @@ public class EnderecoUsuarioFrontofficeDTOMap extends PropertyMap<EnderecoEntity
         map().setUf(source.getDsUf());
         map().setPadrao(source.isPadrao());
         map().setIdTipoEndereco(source.getIdTipoEndereco());
+        map().setIdUsuario(source.getUsuario().getIdUsuario());
     }
 }
