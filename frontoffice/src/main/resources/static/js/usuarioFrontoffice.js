@@ -353,3 +353,13 @@ function stringToDate(dateString) {
     const date = new Date(parts[0], parts[1] - 1, parts[2]);
     return date;
 }
+
+document.getElementById('logoutButton').addEventListener('click', function() {
+    fetch('/logout', { method: 'GET' })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = '/carrinho';
+            }
+        });
+});
+
