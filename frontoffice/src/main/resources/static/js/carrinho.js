@@ -2,12 +2,6 @@ $(document).ready(function(){
     $('#cep').mask('00000-000');
 });
 
-$(document).ready(function () {
-    $('#form-calculo-frete').submit(async function(e) {
-        //REGRA DE CALCULO DE FRETE
-    });
-});
-
 function diminuirQtdProduto(element) {
     let idProduto = element.dataset.idproduto;
     let elQtdProduto = document.getElementById('quantidade-' + idProduto);
@@ -65,4 +59,64 @@ function aumentarQtdProduto(element) {
             abrirToastErro(data.responseText);
         }
     });
+}
+
+function calcularFrete() {
+    const cep = document.getElementById('cep').value;
+    if (cep.length !== 9) {
+        abrirToastErro("CEP inválido.");
+        return;
+    }
+    const frete = document.getElementById('frete').value;
+    let valorFrete;
+
+    switch(frete) {
+        case 'normal':
+            valorFrete = 10.00;
+            break;
+        case 'rapido':
+            valorFrete = 20.00;
+            break;
+        case 'ultra-rapido':
+            valorFrete = 30.00;
+            break;
+        default:
+            valorFrete = 0.00;
+    }
+
+    const valorTotalItens = parseFloat(document.getElementById('valor-total-itens').innerText.replace('R$', '').replace(',', '.'));
+    const valorTotalPedido = valorTotalItens + valorFrete;
+
+    document.getElementById('valor-frete').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
+    document.getElementById('valor-total-pedido').innerText = `R$ ${valorTotalPedido.toFixed(2).replace('.', ',')}`;
+    document.getElementById('resultado-frete').innerText = `O valor do frete (${frete}) para o CEP ${cep} é R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
+
+    let carrinho = {
+        valorFrete: valorFrete,
+    }
+
+    $.post("/carrinho/calcularFrete", carrinho, function(data) {
+        if (data) {
+            if (data.status !== "OK") {
+                abrirToastErro(data.mensagem);
+            }
+            document.getElementById('btn-checkout').style.display = 'block';
+        } else {
+            abrirToastErro("Erro ao calcular frete.");
+        }
+    }).fail(function(data) {
+        if (data.responseText) {
+            abrirToastErro(data.responseText);
+        }
+    });
+}
+
+function irParaCheckout() {
+    const cep = document.getElementById('cep').value;
+    if (cep.length !== 9) {
+        abrirToastErro("CEP inválido.");
+        return;
+    }
+
+    window.location.href = "/pedido/checkout";
 }

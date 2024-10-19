@@ -70,6 +70,7 @@
 
                 <input type="hidden" class="form-control" id="tipo-endereco-entrega" name="idTipoEndereco" value="1">
                 <input type="hidden" class="form-control" id="id-usuario" name="idUsuario" th:value="${enderecoFrontoffice.idUsuario}">
+                <input type="hidden" id="urlredirect" th:if="${urlRedirect != null}" th:value="${urlRedirect}">
             </div>
 
             <div class="row justify-content-between w-100 mx-0 mt-3">

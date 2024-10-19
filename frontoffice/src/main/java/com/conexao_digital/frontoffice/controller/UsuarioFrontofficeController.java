@@ -40,7 +40,11 @@ public class UsuarioFrontofficeController {
     }
 
     @GetMapping("/criar")
-    public String criarUsuarioFrontOffice(Model model) {
+    public String criarUsuarioFrontOffice(@RequestParam(defaultValue = "", required = false, name = "urlredirect") String urlredirect, Model model) {
+        if (urlredirect != null && !urlredirect.isEmpty()) {
+            model.addAttribute("urlRedirect", urlredirect);
+        }
+
         model.addAttribute("carrinho", this.carrinhoService.getCarrinho());
         UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
         model.addAttribute("usuarioLogado", usuarioLogado);
@@ -51,13 +55,20 @@ public class UsuarioFrontofficeController {
     }
 
     @PostMapping("/criar")
-    public ResponseEntity<Map<String, String>> criarUsuarioFrontOffice(@RequestBody UsuarioFrontofficeDTO  usuarioFrontofficeDTO) {
+    public ResponseEntity<Map<String, String>> criarUsuarioFrontOffice(
+            @RequestParam(defaultValue = "", required = false, name = "urlredirect") String urlredirect, 
+            @RequestBody UsuarioFrontofficeDTO  usuarioFrontofficeDTO) {
+
         Map<String, String> response = new HashMap<>();
 
         try {
             this.usuarioService.criarUsuarioFrontOffice(usuarioFrontofficeDTO);
 
             response.put("status", "OK");
+
+            if (urlredirect != null && !urlredirect.isEmpty() && urlredirect.equals("/pedido/checkout")) {
+                response.put("urlredirect", "/carrinho");
+            }
 
             return ResponseEntity.ok(response);
         } catch (UsuarioFrontofficeException e) {

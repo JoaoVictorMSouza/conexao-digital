@@ -153,10 +153,25 @@ function criarEnderecoFrontoffice() {
         idUsuario: $("#id-usuario").val()
     }
 
-    $.post("/endereco/criar", endereco, function(data) {
+    let url = "/endereco/criar";
+
+    let urlredirectInput = $("#urlredirect");
+    
+    if(urlredirectInput){
+        let urlredirect = urlredirectInput.val();
+        if (urlredirect) {
+            url = url + "?urlredirect=" + urlredirect;
+        }
+    }
+
+    $.post(url, endereco, function(data) {
         if (data) {
             if (data.status === "OK") {
-                window.location.href = "/usuario/editar/" + endereco.idUsuario;
+                if(data.urlredirect) {
+                    window.location.href = data.urlredirect;
+                } else {
+                    window.location.href = "/usuario/editar/" + endereco.idUsuario;
+                }
             } else {
                 abrirToastErro(data.mensagem);
             }
@@ -217,4 +232,27 @@ function habilitarCamposEnderecoEntrega() {
     document.getElementById("complemento-entrega").disabled = false;
     document.getElementById("numero-entrega").disabled = false;
     document.getElementById("btn-buscar-frete-entrega").disabled = false;
+}
+
+function selecionarEnderecoEntrega(element) {
+    let idEndereco = element.dataset.idendereco;
+    let idUsuario = $("#id-usuario").val();
+
+    let url = "/carrinho/selecionarEndereco/" + idEndereco + "/" + idUsuario;
+
+    $.post(url, function(data) {
+        if (data) {
+            if (data.status === "OK") {
+                window.location.href = "/pedido/checkout";
+            } else {
+                abrirToastErro(data.mensagem);
+            }
+        } else {
+            abrirToastErro("Erro ao selecionar endereço de entrega.");
+        }
+    }).fail(function(data) {
+        if (data.responseText) {
+            abrirToastErro(data.responseText);
+        }
+    });
 }

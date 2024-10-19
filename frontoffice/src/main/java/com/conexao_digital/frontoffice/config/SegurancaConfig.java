@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import com.conexao_digital.frontoffice.service.interfaces.IAutenticacaoService;
 
@@ -21,6 +22,14 @@ public class SegurancaConfig {
     @Autowired
     private IAutenticacaoService autenticacaoService;
 
+    @Autowired
+    private CustomAuthenticationEntryPoint customAuthenticationEntryPoint; 
+
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return new CustomAuthenticationSuccessHandler();
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -32,7 +41,7 @@ public class SegurancaConfig {
             )
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/", true)
+                .successHandler(customAuthenticationSuccessHandler())
                 .permitAll()
             )
             .logout(logout -> logout
@@ -44,6 +53,9 @@ public class SegurancaConfig {
                 .addHeaderWriter((request, response) -> {
                     response.setHeader("X-Frame-Options", "ALLOW-FROM http://localhost:8080"); // Permite frames de localhost
                 })
+            )
+            .exceptionHandling(exceptionHandling -> 
+                exceptionHandling.authenticationEntryPoint(customAuthenticationEntryPoint)
             );
 
         return http.build();

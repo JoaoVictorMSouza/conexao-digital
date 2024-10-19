@@ -7,12 +7,16 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.conexao_digital.frontoffice.dto.CarrinhoDTO;
+import com.conexao_digital.frontoffice.dto.EnderecoDTO;
 import com.conexao_digital.frontoffice.dto.ItemCarrinhoDTO;
 import com.conexao_digital.frontoffice.dto.ProdutoFrontofficeDTO;
 import com.conexao_digital.frontoffice.entity.backoffice.ImagemProdutoBackofficeEntity;
 import com.conexao_digital.frontoffice.entity.backoffice.ProdutoBackofficeEntity;
+import com.conexao_digital.frontoffice.entity.frontoffice.EnderecoEntity;
+import com.conexao_digital.frontoffice.entity.frontoffice.UsuarioFrontofficeEntity;
 import com.conexao_digital.frontoffice.exception.CarrinhoFrontofficeException;
 import com.conexao_digital.frontoffice.repository.interfaces.backoffice.IProdutoBackOfficeRepository;
+import com.conexao_digital.frontoffice.repository.interfaces.frontoffice.IUsuarioFrontofficeRepository;
 import com.conexao_digital.frontoffice.service.interfaces.ICarrinhoService;
 
 import jakarta.servlet.http.HttpSession;
@@ -20,12 +24,14 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class CarrinhoService implements ICarrinhoService {
     private IProdutoBackOfficeRepository produtoBackOfficeRepository;
+    private IUsuarioFrontofficeRepository usuarioFrontofficeRepository;
     private ModelMapper modelMapper;
 
 
     @Autowired
-    public CarrinhoService(IProdutoBackOfficeRepository produtoBackOfficeRepository, ModelMapper modelMapper) {
+    public CarrinhoService(IProdutoBackOfficeRepository produtoBackOfficeRepository, IUsuarioFrontofficeRepository usuarioFrontofficeRepository, ModelMapper modelMapper) {
         this.produtoBackOfficeRepository = produtoBackOfficeRepository;
+        this.usuarioFrontofficeRepository = usuarioFrontofficeRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -118,13 +124,35 @@ public class CarrinhoService implements ICarrinhoService {
     }
 
     public void calcularFrete(CarrinhoDTO carrinhoDTO) {
-
-        carrinhoDTO.setValorFrete(12.5);//REMOVER ESSA LINHA E ADICIONAR A REGRA FINAL DE FRETE
-        // ADICIONAR A REGRA FINAL DE FRETE
-        // ADICIONAR A REGRA FINAL DE FRETE
-        // ADICIONAR A REGRA FINAL DE FRETE
-        // ADICIONAR A REGRA FINAL DE FRETE
-
+        carrinhoDTO.setValorFrete(carrinhoDTO.getValorFrete());
         this.calcularCarrinho(carrinhoDTO);
+    }
+
+    public void selecionarEndereco(CarrinhoDTO carrinhoDTO, int idEndereco, int idUsuario) {
+        UsuarioFrontofficeEntity usuario = usuarioFrontofficeRepository.findByIdUsuario(idUsuario);
+        if (usuario == null) {
+            throw new CarrinhoFrontofficeException("Usuário não encontrado");
+        }
+
+        if (usuario.getEnderecos() == null || usuario.getEnderecos().size() == 0) {
+            throw new CarrinhoFrontofficeException("Usuário não possui endereços cadastrados");
+        }
+
+        if (usuario.getEnderecos().stream().noneMatch(endereco -> endereco.getIdEndereco() == idEndereco)) {
+            throw new CarrinhoFrontofficeException("Endereço não encontrado");
+        }
+        
+        EnderecoEntity enderecoPadraoEntity = usuario.getEnderecos().stream().filter(endereco -> endereco.getIdEndereco() == idEndereco).findFirst().get();
+        EnderecoDTO enderecoPadraoDTO = this.mapearEnderecoEntityParaEnderecoDTO(enderecoPadraoEntity);
+
+        carrinhoDTO.setEndereco(enderecoPadraoDTO);
+    }
+
+    private EnderecoDTO mapearEnderecoEntityParaEnderecoDTO(EnderecoEntity enderecoEntity) {
+        return modelMapper.map(enderecoEntity, EnderecoDTO.class);
+    }
+
+    public void selecionarFormaPagamento(CarrinhoDTO carrinhoDTO, int idFormaPagamento) {
+        carrinhoDTO.setIdFormaPagamento(idFormaPagamento);
     }
 }

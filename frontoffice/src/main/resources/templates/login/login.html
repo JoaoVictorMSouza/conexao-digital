@@ -12,7 +12,7 @@
     <div th:insert="~{fragments/header :: header}"></div>
 
     <main class="d-flex flex-grow-1 flex-column align-items-center col mt-5">
-        <form th:action="@{/login}" method="post" class="w-25 mt-4 p-3">
+        <form th:action="@{/login}" method="post" class="w-25 mt-4 p-3 shadow rounded">
             <div class="form-group">
               <label for="email">Email</label>
               <input type="email" class="form-control" id="username" name="username" required>
@@ -24,7 +24,13 @@
             <div class="d-flex justify-content-center w-100 mt-4">
                 <button type="submit" class="btn btn-primary w-50">Entrar</button>
             </div>
+            <input th:if="${urlRedirect != null}" type="hidden" name="redirect" id="redirect" th:value="${urlRedirect}">
         </form>
+        <div class="d-flex mt-3">
+            <p>Ainda não está cadastrado? &nbsp;</p>
+            <a th:if="${urlRedirect == null}" th:href="@{/usuario/criar}">Cadastre-se</a>
+            <a th:if="${urlRedirect != null}" th:href="@{/usuario/criar?urlredirect={url} (url=${urlRedirect})}">Cadastre-se</a>
+        </div>
         <div class="toast-container p-3 bottom-0 end-0" th:insert="~{fragments/toastErro}"></div>
     </main>
     

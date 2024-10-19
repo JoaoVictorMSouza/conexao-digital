@@ -1,6 +1,10 @@
 package com.conexao_digital.frontoffice.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.conexao_digital.frontoffice.dto.CarrinhoDTO;
 import com.conexao_digital.frontoffice.dto.UsuarioLogadoDTO;
+import com.conexao_digital.frontoffice.exception.UsuarioFrontofficeException;
 import com.conexao_digital.frontoffice.service.interfaces.IAutenticacaoService;
 import com.conexao_digital.frontoffice.service.interfaces.ICarrinhoService;
 
@@ -63,14 +68,60 @@ public class CarrinhoController {
         return "redirect:/carrinho";
     }
 
+    @PostMapping("/selecionarEndereco/{idEndereco}/{idUsuario}")
+    public ResponseEntity<Map<String, String>> atualizarIdEnderecoCarrinho(@PathVariable int idEndereco, 
+                                                                            @PathVariable int idUsuario, 
+                                                                            @ModelAttribute("carrinho") CarrinhoDTO carrinho) {
+        Map<String, String> response = new HashMap<>();
+
+        try {        
+            carrinhoService.selecionarEndereco(carrinho, idEndereco, idUsuario);
+
+            response.put("status", "OK");
+
+            return ResponseEntity.ok(response);
+        } catch (UsuarioFrontofficeException e) {
+            System.out.println(e.getMessage());
+            response.put("status", "ERROR");
+            response.put("mensagem", e.getMessage());
+            throw e;
+        }
+    }
+
     @PostMapping("/calcularFrete")
-    public String calcularFrete(@ModelAttribute("carrinho") CarrinhoDTO carrinho) {
-        //LOGICA DE CALCULO DE FRETE
-        //LOGICA DE CALCULO DE FRETE
-        //LOGICA DE CALCULO DE FRETE
-        //LOGICA DE CALCULO DE FRETE
-        //LOGICA DE CALCULO DE FRETE
-        this.carrinhoService.calcularFrete(carrinho); 
-        return "redirect:/carrinho";
+    public ResponseEntity<Map<String, String>> calcularFrete(@ModelAttribute("carrinho") CarrinhoDTO carrinho) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            this.carrinhoService.calcularFrete(carrinho); 
+
+            response.put("status", "OK");
+
+            return ResponseEntity.ok(response);
+        } catch (UsuarioFrontofficeException e) {
+            System.out.println(e.getMessage());
+            response.put("status", "ERROR");
+            response.put("mensagem", e.getMessage());
+            throw e;
+        }
+    }
+
+    @PostMapping("/selecionarFormaPagamento/{idFormaPagamento}")
+    public ResponseEntity<Map<String, String>> selecionarFormaPagamento(@PathVariable int idFormaPagamento, 
+                                                                        @ModelAttribute("carrinho") CarrinhoDTO carrinho) {
+        Map<String, String> response = new HashMap<>();
+
+        try {
+            carrinhoService.selecionarFormaPagamento(carrinho, idFormaPagamento);
+
+            response.put("status", "OK");
+
+            return ResponseEntity.ok(response);
+        } catch (UsuarioFrontofficeException e) {
+            System.out.println(e.getMessage());
+            response.put("status", "ERROR");
+            response.put("mensagem", e.getMessage());
+            throw e;
+        }
     }
 }

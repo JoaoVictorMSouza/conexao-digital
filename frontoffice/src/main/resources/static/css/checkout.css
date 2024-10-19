@@ -1,0 +1,14 @@
+.line-breaker{
+    background-color: #a9a9a9;
+    height: 1px;
+    width: 100%;
+}
+
+.img-produto {
+    max-width: 100px;
+}
+
+.img-forma-pagamento {
+    max-width: 50px;
+    max-height: 50px;
+}

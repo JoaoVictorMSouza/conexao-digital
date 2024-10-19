@@ -246,15 +246,30 @@ function criarUsuarioFrontoffice() {
         enderecos: [enderecoFaturamento, enderecoEntrega]
     }
 
+    let url = "/usuario/criar";
+
+    let urlredirectInput = $("#urlredirect");
+    
+    if(urlredirectInput){
+        let urlredirect = urlredirectInput.val();
+        if (urlredirect) {
+            url = url + "?urlredirect=" + urlredirect;
+        }
+    }
+
     $.ajax({
-        url: "/usuario/criar",
+        url: url,
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(usuario),
         success: function(data) {
             if (data) {
                 if (data.status === "OK") {
-                    window.location.href = "/login";
+                    if(data.urlredirect) {
+                        window.location.href = data.urlredirect;
+                    } else {
+                        window.location.href = "/login";
+                    }
                 } else {
                     abrirToastErro(data.mensagem);
                 }
