@@ -129,11 +129,17 @@
             <div class="col-5 shadow p-4 rounded text-center">
                 <h5>Forma de pagamento</h5>
                 <div class="d-flex justify-content-evenly mt-3">
-                    <button type="button" class="btn btn-secondary" onclick="pagamentoCartaoCredito()">
-                        <img src="/images/cartao-icon.png" alt="Visa" class="img-forma-pagamento">
+                    <button type="button" class="btn btn-light border" onclick="pagamentoCartaoCredito()" id="cartao-credito-container">
+                        <figure>
+                            <img src="/images/cartao-icon.png" alt="Visa" class="img-forma-pagamento">
+                            <figcaption>Cartão de crédito</figcaption>
+                        </figure>
                     </button>
-                    <button type="button" class="btn btn-secondary" onclick="pagamentoBoleto()">
-                        <img src="/images/boleto-icon.png" alt="Boleto" class="img-forma-pagamento">
+                    <button type="button" class="btn btn-light border" onclick="pagamentoBoleto()" id="boleto-container">
+                        <figure>
+                            <img src="/images/boleto-icon.png" alt="Boleto" class="img-forma-pagamento">
+                            <figcaption>Boleto</figcaption>
+                        </figure>
                     </button>
                 </div>
 
@@ -150,6 +156,14 @@
                             <input type="text" id="credit-card-cvv" class="form-control mt-3" mask="9999" placeholder="CVV">
                         </div>
                     </div>
+                    <select id="parcelas" name="parcelas" class="form-select mt-3">
+                        <option selected>Selecione a quantidade de parcelas</option>
+                        <option value="1">1x</option>
+                        <option value="2">2x</option>
+                        <option value="3">3x</option>
+                        <option value="4">4x</option>
+                        <option value="4">5x</option>
+                    </select>
                 </div>
 
                 <div id="boleto" style="display: none;" class="mt-5">

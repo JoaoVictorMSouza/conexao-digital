@@ -50,7 +50,7 @@
                 <div>
                     <h5>Calcule o frete</h5>
                     <div class="input-group w-25">
-                        <input type="text" name="cep" id="cep" inputmode="numeric" mask="99999-999" class="form-control" required>
+                        <input type="text" name="cep" id="cep" inputmode="numeric" mask="99999-999" class="form-control" required th:value="${carrinho.cep}">
                         <select id="frete" name="frete" class="form-select">
                             <option value="normal">Normal</option>
                             <option value="rapido">Rápido</option>
@@ -74,10 +74,10 @@
                 </div>
                 <div class="d-flex justify-content-between">
                     <p>Total:</p>
-                    <p id="valor-total-pedido" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorTotalItens, 1, 'COMMA', 2, 'POINT')}"></p>
+                    <p id="valor-total-pedido" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorTotal, 1, 'COMMA', 2, 'POINT')}"></p>
                 </div>
-                <a th:if="${usuarioLogado == null}" th:href="@{/login?urlredirect=/pedido/checkout}" class="btn btn-primary mt-3">Concluir Compra</a>
-                <button th:if="${usuarioLogado != null}" th:href="@{/pedido/checkout}" class="btn btn-primary mt-3" id="btn-checkout" style="display: none;"onclick="irParaCheckout()">Concluir Compra</button>
+                <button th:if="${usuarioLogado == null}" class="btn btn-primary mt-3" id="btn-checkout" style="display: none;" onclick="irParaCheckout('/pedido/checkout')">Concluir Compra</button>
+                <button th:if="${usuarioLogado != null}" class="btn btn-primary mt-3" id="btn-checkout" onclick="irParaCheckout()">Concluir Compra</button>
             </section>
         </div>
 

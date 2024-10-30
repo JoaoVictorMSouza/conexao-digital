@@ -11,9 +11,14 @@ public class CarrinhoDTO {
     private double valorTotalItens;
     private double valorTotal;
     private double valorFrete;
+    private String cep;
     private int idFormaPagamento;
     private FormaPagamentoEnum formaPagamento;
     private EnderecoDTO endereco;
+
+    public CarrinhoDTO() {
+        this.cep = "";
+    }
 
     public List<ItemCarrinhoDTO> getItens() {
         return itens;
@@ -41,6 +46,13 @@ public class CarrinhoDTO {
     }
     public void setValorFrete(double valorFrete) {
         this.valorFrete = valorFrete;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 
     public double getValorTotalItens() {

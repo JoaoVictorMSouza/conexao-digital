@@ -5,7 +5,10 @@ $(document).ready(function(){
 });
 
 function pagamentoBoleto() {
+    document.getElementById('boleto-container').style.backgroundColor = '#8bf793';
     document.getElementById('boleto').style.display = 'block';
+
+    document.getElementById('cartao-credito-container').style.backgroundColor = '#f8f9fa';
     document.getElementById('cartao-credito').style.display = 'none';
 
     document.getElementById('finalizar-compra').style.display = 'block';
@@ -30,7 +33,10 @@ function pagamentoBoleto() {
 }
 
 function pagamentoCartaoCredito() {
+    document.getElementById('boleto-container').style.backgroundColor = '#f8f9fa';
     document.getElementById('boleto').style.display = 'none';
+
+    document.getElementById('cartao-credito-container').style.backgroundColor = '#8bf793';
     document.getElementById('cartao-credito').style.display = 'block';
 
     document.getElementById('finalizar-compra').style.display = 'block';
@@ -55,14 +61,17 @@ function pagamentoCartaoCredito() {
 }
 
 function validarCheckout() {
+    fecharToast();
+
     let formaPagamento = document.getElementById('forma-pagamento-escolhida').value;
 
     if (formaPagamento === "2") {
         let numeroCartao = document.getElementById('credit-card-number').value;
         let dataExpiracao = document.getElementById('credit-card-expiry').value;
         let cvv = document.getElementById('credit-card-cvv').value;
+        let parcelas = document.getElementById('parcelas').value;
 
-        if (numeroCartao === "" || dataExpiracao === "" || cvv === "") {
+        if (numeroCartao === "" || dataExpiracao === "" || cvv === "" || isNaN(Number(parcelas))) {
             abrirToastErro("Preencha todos os campos do cartão de crédito");
             return false;
         }

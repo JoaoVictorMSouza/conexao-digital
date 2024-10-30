@@ -93,6 +93,7 @@ function calcularFrete() {
 
     let carrinho = {
         valorFrete: valorFrete,
+        cep: cep
     }
 
     $.post("/carrinho/calcularFrete", carrinho, function(data) {
@@ -111,12 +112,18 @@ function calcularFrete() {
     });
 }
 
-function irParaCheckout() {
+function irParaCheckout(urlRedirect) {
     const cep = document.getElementById('cep').value;
     if (cep.length !== 9) {
         abrirToastErro("CEP inválido.");
         return;
     }
 
-    window.location.href = "/pedido/checkout";
+    let href = "/pedido/checkout";
+
+    if (urlRedirect) {
+        href += "?urlRedirect=" + urlRedirect;
+    }
+
+    window.location.href = href;
 }

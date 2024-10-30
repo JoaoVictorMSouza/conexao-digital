@@ -6,6 +6,7 @@
 
 .resumo-pedido-container {
     background-color: #fddb9385;
+    max-height: 275px;
 }
 
 .input-qtd {

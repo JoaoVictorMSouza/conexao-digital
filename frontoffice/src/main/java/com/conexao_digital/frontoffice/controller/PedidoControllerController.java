@@ -41,10 +41,9 @@ public class PedidoControllerController {
         UsuarioFrontofficeDTO usuarioFrontofficeDTO = usuarioService.buscarUsuarioFrontOfficePorId(usuarioLogado.getId());
         model.addAttribute("usuarioFrontoffice", usuarioFrontofficeDTO);
 
-
         if (carrinho.getEndereco() == null) {
             EnderecoDTO enderecoDTO = usuarioFrontofficeDTO.getEnderecos().stream()
-                                            .filter(endereco -> endereco.getTipoEndereco().equals(EnderecoTipoEnum.ENTREGA) && endereco.isPadrao()).findFirst().orElse(null);
+                                            .filter(endereco -> endereco.getTipoEndereco().equals(EnderecoTipoEnum.ENTREGA) && endereco.isPadrao()).findFirst().orElse(new EnderecoDTO());
                                             
             carrinhoService.selecionarEndereco(carrinho, enderecoDTO.getIdEndereco(), usuarioFrontofficeDTO.getId());
         }
