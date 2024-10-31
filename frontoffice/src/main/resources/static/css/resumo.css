@@ -1,0 +1,24 @@
+.line-breaker{
+    background-color: #a9a9a9;
+    height: 1px;
+    width: 100%;
+}
+
+.img-produto {
+    max-width: 100px;
+}
+
+.img-forma-pagamento {
+    max-width: 50px;
+    max-height: 50px;
+}
+
+.forma-pagamento {
+    background-color: #8bf793;
+    height: 85px;
+    width: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

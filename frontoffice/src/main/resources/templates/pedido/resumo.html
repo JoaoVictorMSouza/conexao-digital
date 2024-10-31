@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Fazer checkout</title>
+    <title>Resumo do pedido</title>
     <link rel="stylesheet" th:href="@{/css/header.css}" /> <!-- Referência ao CSS do fragmento -->
-    <link rel="stylesheet" th:href="@{/css/checkout.css}" />
+    <link rel="stylesheet" th:href="@{/css/resumo.css}" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -13,7 +13,7 @@
 
     <main class="d-flex flex-grow-1 justify-content-start flex-column p-5">
         <div class="text-center mb-4">
-            <h2>Checkout</h2>
+            <h2>Resumo do pedido</h2>
         </div>
         <div th:if="${carrinho.getItens().size() > 0}"  class="d-flex">
             <section class="me-4 flex-grow-1">
@@ -52,8 +52,6 @@
             <div class="col-5 shadow p-4 rounded">
                 <div class="d-flex justify-content-between mb-3">
                     <h5>Endereço de entrega</h5>
-
-                    <a th:href="@{/endereco/enderecoEntrega/{idUsuario} (idUsuario=${usuarioFrontoffice.id})}" class="btn btn-primary">Selecionar outro endereço de entrega</a>
                 </div>
 
                 <div class="col mb-2">
@@ -114,70 +112,40 @@
                     <p>Subtotal</p>
                     <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.getValorTotal(), 1, 'COMMA', 2, 'POINT')}"></p>
                 </div>
+                <div class="line-breaker"></div>
                 <div class="d-flex justify-content-between">
                     <p>Frete</p>
                     <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorFrete, 1, 'COMMA', 2, 'POINT')}"></p>
                 </div>
+                <div class="line-breaker"></div>
                 <div class="d-flex justify-content-between">
                     <p>Total</p>
                     <p id="total" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.getValorTotal(), 1, 'COMMA', 2, 'POINT')}"></p>
                 </div>
-            </div>
-        </div>
-
-        <div class="mt-4 row justify-content-center">
-            <div class="col-5 shadow p-4 rounded text-center">
-                <h5>Forma de pagamento</h5>
-                <div class="d-flex justify-content-evenly mt-3">
-                    <button type="button" class="btn btn-light border" onclick="pagamentoCartaoCredito()" id="cartao-credito-container">
-                        <figure class="m-0">
-                            <img src="/images/cartao-icon.png" alt="Visa" class="img-forma-pagamento">
-                            <figcaption>Cartão de crédito</figcaption>
-                        </figure>
-                    </button>
-                    <button type="button" class="btn btn-light border" onclick="pagamentoBoleto()" id="boleto-container">
+                <div class="line-breaker"></div>
+                <div class="d-flex justify-content-between mt-3 text-start">
+                    <p>Forma de pagamento escolhida:</p>
+                    <div class="border forma-pagamento rounded p-1" th:if="${carrinho.idFormaPagamento == 1}">
                         <figure class="m-0">
                             <img src="/images/boleto-icon.png" alt="Boleto" class="img-forma-pagamento">
                             <figcaption>Boleto</figcaption>
                         </figure>
-                    </button>
-                </div>
-
-                <input type="hidden" id="forma-pagamento-escolhida">
-
-                <div id="cartao-credito" style="display: none;" class="mt-5">
-                    <input type="text" id="credit-card-number" class="form-control mt-3" placeholder="Número do cartão">
-                    <input type="text" class="form-control mt-3" placeholder="Nome do titular">
-                    <div class="row">
-                        <div class="col">
-                            <input type="text" id="credit-card-expiry" class="form-control mt-3" placeholder="Validade">
-                        </div>
-                        <div class="col">
-                            <input type="text" id="credit-card-cvv" class="form-control mt-3" mask="9999" placeholder="CVV">
-                        </div>
                     </div>
-                    <select id="parcelas" name="parcelas" class="form-select mt-3">
-                        <option selected>Selecione a quantidade de parcelas</option>
-                        <option value="1">1x</option>
-                        <option value="2">2x</option>
-                        <option value="3">3x</option>
-                        <option value="4">4x</option>
-                        <option value="4">5x</option>
-                    </select>
-                </div>
-
-                <div id="boleto" style="display: none;" class="mt-5">
-                    <div class="form-group">
-                        <label for="termos-boleto">Concordo com os termos:</label>
-                        <input type="checkbox" class="form-check-input" id="termos-boleto">
+                    <div class="border forma-pagamento rounded" th:if="${carrinho.idFormaPagamento == 2}">
+                        <figure class="m-0">
+                            <img src="/images/cartao-icon.png" alt="Visa" class="img-forma-pagamento">
+                            <figcaption>Cartão de crédito</figcaption>
+                        </figure>
                     </div>
+                    <input type="hidden" id="forma-pagamento-escolhida" th:value="${carrinho.idFormaPagamento}">
                 </div>
             </div>
+            <div class="mt-3 d-flex justify-content-between p-3">
+                <a th:href="@{/pedido/checkout}" type="button" class="btn btn-secondary w-25">Voltar</a>
 
-            <button type="button" class="btn btn-primary mt-3" id="finalizar-compra" onclick="validarCheckout()" style="display: none;">Ir para o resumo do pedido</button>
+                <button type="button" class="btn btn-success w-25" id="finalizar-compra" onclick="finalizarCompra()">Finalizar compra</button>
+            </div>
         </div>
-
-
 
         <div th:if="${carrinho.getItens().size() <= 0}"  class="d-flex justify-content-center align-items-center flex-column">
             <h2>O seu carrinho está vázio</h2>
@@ -196,6 +164,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <!-- Adicionar o arquivo com as funções do toast -->
     <script src="/js/toast.js"></script>
-    <script src="/js/checkout.js"></script>
+    <script src="/js/resumo.js"></script>
 </body>
 </html>

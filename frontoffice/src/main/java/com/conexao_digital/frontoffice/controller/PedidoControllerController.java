@@ -32,7 +32,7 @@ public class PedidoControllerController {
     }
 
     @GetMapping("/checkout")
-    public String criarEnderecoFrontOffice(Model model) {
+    public String checkout(Model model) {
         CarrinhoDTO carrinho = carrinhoService.getCarrinho();
         model.addAttribute("carrinho", carrinho);
         UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
@@ -49,5 +49,24 @@ public class PedidoControllerController {
         }
 
         return "pedido/checkout";
+    }
+
+    @GetMapping("/resumo")
+    public String visualizarResumoPedido(Model model) {
+        CarrinhoDTO carrinho = carrinhoService.getCarrinho();
+        model.addAttribute("carrinho", carrinho);
+
+
+        if (carrinho.getIdFormaPagamento() <= 0) {
+            return "redirect:/pedido/checkout";            
+        }
+
+        UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
+        model.addAttribute("usuarioLogado", usuarioLogado);
+
+        UsuarioFrontofficeDTO usuarioFrontofficeDTO = usuarioService.buscarUsuarioFrontOfficePorId(usuarioLogado.getId());
+        model.addAttribute("usuarioFrontoffice", usuarioFrontofficeDTO);
+
+        return "pedido/resumo";
     }
 }

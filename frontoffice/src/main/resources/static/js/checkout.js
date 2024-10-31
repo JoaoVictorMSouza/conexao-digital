@@ -84,7 +84,5 @@ function validarCheckout() {
         }
     }
 
-    alert("Compra finalizada com sucesso!"); //REMOVER DEPOIS
-
-    return true;
+    window.location.href = `/pedido/resumo`;
 }
