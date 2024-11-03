@@ -169,14 +169,44 @@ public class PedidoService implements IPedidoService {
     }
 
     private PedidoDTO mapearPedidoEntityParaPedidoDTO(PedidoEntity pedidoEntity) {
-        return modelMapper.map(pedidoEntity, PedidoDTO.class);
-    }
-
-    private PedidoEntity mapearPedidoDTOParaPedidoEntity(PedidoDTO pedidoDTO) {
-        return modelMapper.map(pedidoDTO, PedidoEntity.class);
+        PedidoDTO pedido = modelMapper.map(pedidoEntity, PedidoDTO.class);
+        pedido.setDsStatusPagamento(this.getMensagemStatusPagamento(pedido.getStatusPagamento()));
+        return pedido;
     }
 
     private ItemPedidoEntity mapearItemCarrinhoDTOParaItemPedidoEntity(ItemCarrinhoDTO itemCarrinhoDTO) {
         return modelMapper.map(itemCarrinhoDTO, ItemPedidoEntity.class);
+    }
+
+    public List<PedidoDTO> listarPedidosPorUsuario(int idUsuario) {
+        if (idUsuario <= 0) {
+            throw new PedidoFrontofficeException("ID do usuário inválido.");
+        }
+
+        UsuarioFrontofficeEntity usuario = usuarioRepository.findByIdUsuario(idUsuario);
+        if (usuario == null) {
+            throw new PedidoFrontofficeException("Usuário não encontrado.");
+        }
+
+        List<PedidoEntity> pedidos = pedidoRepository.findByUsuario(usuario);
+
+        List<PedidoDTO> pedidosDTO = pedidos.stream()
+                .map(this::mapearPedidoEntityParaPedidoDTO)
+                .toList();
+
+        return pedidosDTO;
+    }
+
+    private String getMensagemStatusPagamento(StatusPagamentoEnum statusPagamento) {
+        switch (statusPagamento) {
+            case AGUARDANDO_PAGAMENTO:
+                return "Aguardando pagamento";
+                case PAGAMENTO_CONFIRMADO:
+                return "Pagamento confirmado";
+            case PAGAMENTO_CANCELADO:
+                return "Pagamento cancelado";
+            default:
+                return "Status de pagamento inválido";
+        }
     }
 }

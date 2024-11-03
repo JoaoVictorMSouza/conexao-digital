@@ -2,13 +2,17 @@ package com.conexao_digital.frontoffice.dto;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.conexao_digital.frontoffice.enums.StatusPagamentoEnum;
 
 public class PedidoDTO {
     private long idPedido;
-    private Date dhPedido;
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    private Date dataPedidoFront;
     private double valorTotal;
     private StatusPagamentoEnum statusPagamento;
+    private String dsStatusPagamento;
     private int idStatusPagamento;
 
     public long getIdPedido() {
@@ -18,11 +22,11 @@ public class PedidoDTO {
         this.idPedido = idPedido;
     }
 
-    public Date getDhPedido() {
-        return dhPedido;
+    public Date getDataPedidoFront() {
+        return dataPedidoFront;
     }
-    public void setDhPedido(Date dhPedido) {
-        this.dhPedido = dhPedido;
+    public void setDataPedidoFront(Date dataPedidoFront) {
+        this.dataPedidoFront = dataPedidoFront;
     }
 
     public double getValorTotal() {
@@ -38,6 +42,13 @@ public class PedidoDTO {
     public void setStatusPagamento(StatusPagamentoEnum statusPagamento) {
         this.statusPagamento = statusPagamento;
         this.idStatusPagamento = statusPagamento.getId();
+    }
+
+    public String getDsStatusPagamento() {
+        return dsStatusPagamento;
+    }
+    public void setDsStatusPagamento(String dsStatusPagamento) {
+        this.dsStatusPagamento = dsStatusPagamento;
     }
 
     public int getIdStatusPagamento() {

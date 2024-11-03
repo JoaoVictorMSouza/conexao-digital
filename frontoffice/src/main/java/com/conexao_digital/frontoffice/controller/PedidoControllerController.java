@@ -1,5 +1,6 @@
 package com.conexao_digital.frontoffice.controller;
 
+import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
 
@@ -113,6 +114,9 @@ public class PedidoControllerController {
 
         UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
         model.addAttribute("usuarioLogado", usuarioLogado);
+
+        List<PedidoDTO> pedidos = pedidoService.listarPedidosPorUsuario(usuarioLogado.getId());
+        model.addAttribute("listaPedido", pedidos);
 
         return "pedido/meuspedidos";
     }

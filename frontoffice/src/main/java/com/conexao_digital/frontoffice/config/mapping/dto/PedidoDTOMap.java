@@ -8,7 +8,7 @@ import com.conexao_digital.frontoffice.entity.frontoffice.PedidoEntity;
 public class PedidoDTOMap extends PropertyMap<PedidoEntity, PedidoDTO> {
     @Override
     protected void configure() {
-        map().setDhPedido(source.getDhPedido());
+        map().setDataPedidoFront(source.getDhPedido());
         map().setIdPedido(source.getIdPedido());
         // map().setStatusPagamento(StatusPagamentoEnum.fromId(source.getIdStatusPagamento()));
         map().setIdStatusPagamento(source.getIdStatusPagamento());

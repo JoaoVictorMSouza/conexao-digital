@@ -15,6 +15,28 @@
         <div class="text-center mb-4">
             <h2>Meus pedidos</h2>
         </div>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Número do pedido</th>
+                    <th scope="col">Data do pedido</th>
+                    <th scope="col">Valor Total</th>
+                    <th scope="col">Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="pedido : ${listaPedido}">
+                    <td th:text="'# '+ ${pedido.idPedido}">Número pedido</td>
+                    <td th:utext="${#dates.format(pedido.dataPedidoFront, 'dd/MM/yyyy HH:mm')}">Data pedido</td>
+                    <td th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorTotal, 1, 'COMMA', 2, 'POINT')}">Valor Total</td>
+                    <td th:text="${pedido.dsStatusPagamento}">Status</td>
+                    <td>
+                        <a class="btn btn-primary">Detalhes</a>
+                    </td>
+                </tr>
+              </tbody>
+        </table>
         <div class="toast-container p-3 bottom-0 end-0" th:insert="~{fragments/toastErro}"></div>
     </main>
     
