@@ -102,6 +102,7 @@ function calcularFrete() {
                 abrirToastErro(data.mensagem);
             }
             document.getElementById('btn-checkout').style.display = 'block';
+            document.getElementById("container-frete").style.display = 'block';
         } else {
             abrirToastErro("Erro ao calcular frete.");
         }
@@ -122,7 +123,7 @@ function irParaCheckout(urlRedirect) {
     let href = "/pedido/checkout";
 
     if (urlRedirect) {
-        href += "?urlRedirect=" + urlRedirect;
+        href += "?urlredirect=" + urlRedirect;
     }
 
     window.location.href = href;

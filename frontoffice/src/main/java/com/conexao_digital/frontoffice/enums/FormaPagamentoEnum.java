@@ -1,6 +1,7 @@
 package com.conexao_digital.frontoffice.enums;
 
 public enum FormaPagamentoEnum {
+    NAO_DEFINIDO(0),
     BOLETO(1),
     CARTAOCREDITO(2);
 

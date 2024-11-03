@@ -153,6 +153,23 @@
         </div>
 
         <div class="toast-container p-3 bottom-0 end-0" th:insert="~{fragments/toastErro}"></div>
+
+        <div class="modal" tabindex="-1" id="modal-finalizacao-pedido">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Pedido realizado!</h5>
+                </div>
+                <div class="modal-body">
+                  <p id="numero-pedido-modal">Número do pedido: </p>
+                  <p id="valor-pedido-modal">Valor total: </p>
+                </div>
+                <div class="modal-footer">
+                  <a href="#" th:href="@{/pedido/meuspedidos}" type="button" class="btn btn-primary">Ver meus pedidos</a>
+                </div>
+              </div>
+            </div>
+        </div>
     </main>
     
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.6/dist/umd/popper.min.js"></script>

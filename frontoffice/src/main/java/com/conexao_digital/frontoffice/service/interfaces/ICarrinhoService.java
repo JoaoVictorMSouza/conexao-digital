@@ -11,4 +11,5 @@ public interface ICarrinhoService {
     void calcularFrete(CarrinhoDTO carrinhoDTO);
     void selecionarEndereco(CarrinhoDTO carrinhoDTO, int idEndereco, int idUsuario);
     void selecionarFormaPagamento(CarrinhoDTO carrinhoDTO, int idFormaPagamento);
+    void limparCarrinho(CarrinhoDTO carrinhoDTO);
 }

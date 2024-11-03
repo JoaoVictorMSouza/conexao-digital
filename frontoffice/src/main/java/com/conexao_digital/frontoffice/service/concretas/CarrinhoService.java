@@ -153,6 +153,20 @@ public class CarrinhoService implements ICarrinhoService {
     }
 
     public void selecionarFormaPagamento(CarrinhoDTO carrinhoDTO, int idFormaPagamento) {
+        if (idFormaPagamento <= 0) {
+            throw new CarrinhoFrontofficeException("Forma de pagamento inválida");
+        }
         carrinhoDTO.setIdFormaPagamento(idFormaPagamento);
+    }
+
+    public void limparCarrinho(CarrinhoDTO carrinhoDTO) {
+        carrinhoDTO.getItens().clear();
+        carrinhoDTO.setEndereco(null);
+        carrinhoDTO.setIdFormaPagamento(0);
+        carrinhoDTO.setValorFrete(0);
+        carrinhoDTO.setValorTotal(0);
+        carrinhoDTO.setValorTotalItens(0);
+        carrinhoDTO.setQuantidadeItens(0);
+        carrinhoDTO.setCep(null);
     }
 }

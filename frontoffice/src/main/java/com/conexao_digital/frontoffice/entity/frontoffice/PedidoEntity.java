@@ -26,7 +26,6 @@ public class PedidoEntity {
     private double vlTotal;
     private int idStatusPagamento;
     private int idFormaPagamento;
-    private int idUsuario;
     private int idEnderecoEntrega;
     
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -35,4 +34,74 @@ public class PedidoEntity {
     @ManyToOne
     @JoinColumn(name = "fk_usuario")
     private UsuarioFrontofficeEntity usuario;
+
+    public Long getIdPedido() {
+        return idPedido;
+    }
+    public void setIdPedido(Long idPedido) {
+        this.idPedido = idPedido;
+    }
+
+    public Date getDhPedido() {
+        return dhPedido;
+    }
+    public void setDhPedido(Date dhPedido) {
+        this.dhPedido = dhPedido;
+    }
+
+    public double getVlSubtotal() {
+        return vlSubtotal;
+    }
+    public void setVlSubtotal(double vlSubtotal) {
+        this.vlSubtotal = vlSubtotal;
+    }
+
+    public double getVlFrete() {
+        return vlFrete;
+    }
+    public void setVlFrete(double vlFrete) {
+        this.vlFrete = vlFrete;
+    }
+
+    public double getVlTotal() {
+        return vlTotal;
+    }
+    public void setVlTotal(double vlTotal) {
+        this.vlTotal = vlTotal;
+    }
+
+    public int getIdStatusPagamento() {
+        return idStatusPagamento;
+    }
+    public void setIdStatusPagamento(int idStatusPagamento) {
+        this.idStatusPagamento = idStatusPagamento;
+    }
+
+    public int getIdFormaPagamento() {
+        return idFormaPagamento;
+    }
+    public void setIdFormaPagamento(int idFormaPagamento) {
+        this.idFormaPagamento = idFormaPagamento;
+    }
+
+    public int getIdEnderecoEntrega() {
+        return idEnderecoEntrega;
+    }
+    public void setIdEnderecoEntrega(int idEnderecoEntrega) {
+        this.idEnderecoEntrega = idEnderecoEntrega;
+    }
+
+    public List<ItemPedidoEntity> getItens() {
+        return itens;
+    }
+    public void setItens(List<ItemPedidoEntity> itens) {
+        this.itens = itens;
+    }
+
+    public UsuarioFrontofficeEntity getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(UsuarioFrontofficeEntity usuario) {
+        this.usuario = usuario;
+    }
 }

@@ -23,6 +23,9 @@ public class ModelMapperConfig {
         modelMapper.addMappings(new EnderecoUsuarioFrontofficeDTOMap());
         modelMapper.addMappings(new EnderecoUsuarioFrontofficeEntityMap());
 
+        modelMapper.addMappings(new PedidoDTOMap());
+        modelMapper.addMappings(new ItemPedidoEntityMap());
+
         return modelMapper;
     }
 }

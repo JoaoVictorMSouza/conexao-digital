@@ -23,12 +23,17 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UsuarioFrontofficeException.class)
-    public ResponseEntity<String> UsuarioFrontofficeException(UsuarioFrontofficeException ex) {
+    public ResponseEntity<String> handleUsuarioFrontofficeException(UsuarioFrontofficeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(EnderecoFrontofficeException.class)
-    public ResponseEntity<String> EnderecoFrontofficeException(EnderecoFrontofficeException ex) {
+    public ResponseEntity<String> handleEnderecoFrontofficeException(EnderecoFrontofficeException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(PedidoFrontofficeException.class)
+    public ResponseEntity<String> handlePedidoFrontofficeException(PedidoFrontofficeException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 }
