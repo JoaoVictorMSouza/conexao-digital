@@ -18,14 +18,10 @@
             <section th:if="${imagensProdutoBackoffice.size() > 0}"  class="w-50 h-75 visualizar-produto-container-imagens">
                 <div id="carrosel-imagens" class="carousel slide carousel-dark">
                     <div class="carousel-indicators">
-                        <button type="button" data-bs-target="#carrosel-imagens" data-bs-slide-to="0" class="active" aria-current="true" th:if="${imagem.imagemPrincipal}" th:each="imagem : ${imagensProdutoFrontoffice}"></button>
-                        <button type="button" data-bs-target="#carrosel-imagens" th:data-bs-slide-to="${iterStat.index}" th:unless="${imagem.imagemPrincipal}" th:each="imagem, iterStat : ${imagensProdutoFrontoffice}"></button>
+                        <button type="button" data-bs-target="#carrosel-imagens" th:each="imagem, iterStat : ${imagensProdutoBackoffice}" th:data-bs-slide-to="${iterStat.index}" th:classappend="${iterStat.index == 0} ? 'active' : ''"></button>
                     </div>
                     <div class="carousel-inner">
-                        <div th:if="${imagem.imagemPrincipal}" th:each="imagem : ${imagensProdutoBackoffice}" class="carousel-item active text-center">
-                            <img class="imagens-produto" th:src="@{/imagem/{filename}(filename=${imagem.nomeArquivo})}" alt="Imagem do Produto">
-                        </div>
-                        <div th:unless="${imagem.imagemPrincipal}" th:each="imagem : ${imagensProdutoBackoffice}" class="carousel-item text-center">
+                        <div th:each="imagem, iterStat : ${imagensProdutoBackoffice}" th:classappend="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'" class="text-center">
                             <img class="imagens-produto" th:src="@{/imagem/{filename}(filename=${imagem.nomeArquivo})}" alt="Imagem do Produto">
                         </div>
                     </div>

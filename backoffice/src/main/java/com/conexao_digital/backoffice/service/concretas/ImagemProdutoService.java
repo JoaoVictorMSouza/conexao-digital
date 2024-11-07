@@ -135,7 +135,24 @@ public class ImagemProdutoService implements IImagemProdutoService {
     }
 
     public void editarImagens(MultipartFile[] imagens, String ordenacaoImagens, ProdutoBackofficeEntity produtoBackofficeEntity) {
-        //TODO: FAZER REGRA DE EDICAO DE IMAGENS
+        List<ImagemProdutoBackofficeEntity> imagensProduto = this.imagemProdutoBackOfficeRepository.findByProduto(produtoBackofficeEntity);
+
+        for (ImagemProdutoBackofficeEntity imagemProduto : imagensProduto) {
+            this.imagemProdutoBackOfficeRepository.delete(imagemProduto);
+
+            Path caminhoImagem = Paths.get(imagemProduto.getCaminho());
+            this.deletarImagem(caminhoImagem);
+        }
+
+        this.salvarImagens(imagens, ordenacaoImagens, produtoBackofficeEntity);
+    }
+
+    private void deletarImagem(Path caminhoImagem) {
+        try {
+            Files.delete(caminhoImagem);
+        } catch (IOException e) {
+            throw new ImagemProdutoBackofficeException("Erro ao deletar a imagem");
+        }
     }
 
     public String retornarUploadDir() {

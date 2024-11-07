@@ -108,7 +108,40 @@ public class ProdutoService implements IProdutoService {
         }
 
         if (isAdmin) {
-            //TODO: FAZER ALTERAÇÕES DE ADMIN AQUI
+            if (produtoBackofficeDTO.getNome() != null 
+            && !produtoBackofficeDTO.getNome().trim().isEmpty() 
+            && !produtoBackofficeDTO.getNome().equals(produtoBackofficeEntity.getDsNome())) {
+                if (produtoBackofficeDTO.getNome().length() > 200) {
+                    throw new ProdutoBackofficeException("Nome do produto não pode ter mais de 200 caracteres");
+                }
+
+                produtoBackofficeEntity.setDsNome(produtoBackofficeDTO.getNome());
+            }
+
+            if (produtoBackofficeDTO.getDescricaoDetalhada() != null 
+            && !produtoBackofficeDTO.getDescricaoDetalhada().trim().isEmpty() 
+            && !produtoBackofficeDTO.getDescricaoDetalhada().equals(produtoBackofficeEntity.getDsDetalhe())) {
+                if (produtoBackofficeDTO.getDescricaoDetalhada().length() > 2000) {
+                    throw new ProdutoBackofficeException("Descrição detalhada do produto não pode ter mais de 2000 caracteres");
+                }
+
+                produtoBackofficeEntity.setDsDetalhe(produtoBackofficeDTO.getDescricaoDetalhada());
+            }
+
+            if (produtoBackofficeDTO.getPreco() >= 0 
+            && produtoBackofficeDTO.getPreco() != produtoBackofficeEntity.getVlPreco()) {
+                produtoBackofficeEntity.setVlPreco(produtoBackofficeDTO.getPreco());
+            }
+
+            if (produtoBackofficeDTO.getAvaliacao() >= 0 
+            && produtoBackofficeDTO.getAvaliacao() <= 5 
+            && produtoBackofficeDTO.getAvaliacao() != produtoBackofficeEntity.getVlAvaliacao()) {
+                produtoBackofficeEntity.setVlAvaliacao(produtoBackofficeDTO.getAvaliacao());
+            }
+
+            if (produtoBackofficeDTO.getQuantidadeEstoque() >= 0 && produtoBackofficeDTO.getQuantidadeEstoque() != produtoBackofficeEntity.getQtdEstoque()) {
+                produtoBackofficeEntity.setQtdEstoque(produtoBackofficeDTO.getQuantidadeEstoque());
+            }
         }
 
         if(produtoBackofficeDTO.getQuantidadeEstoque() > 0 && produtoBackofficeDTO.getQuantidadeEstoque() != produtoBackofficeEntity.getQtdEstoque()){
@@ -117,10 +150,7 @@ public class ProdutoService implements IProdutoService {
 
         ProdutoBackofficeEntity produtoSalvo = produtoRepository.save(produtoBackofficeEntity);
 
-        //TODO: REALIZAR A EDICAO DAS IMAGENS
-        // if (imagens != null && imagens.length > 0) {
-        //     imagemProdutoService.editarImagens(imagens, ordenacaoImagens, produtoSalvo);
-        // }
+        imagemProdutoService.editarImagens(imagens, ordenacaoImagens, produtoBackofficeEntity);
     }
 
     public void editarStatusProdutoBackOffice(ProdutoBackofficeDTO produtoBackofficeDTO) {
