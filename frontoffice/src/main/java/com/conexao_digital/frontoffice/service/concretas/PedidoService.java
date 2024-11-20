@@ -18,7 +18,7 @@ import com.conexao_digital.frontoffice.entity.frontoffice.ItemPedidoEntity;
 import com.conexao_digital.frontoffice.entity.frontoffice.PedidoEntity;
 import com.conexao_digital.frontoffice.entity.frontoffice.UsuarioFrontofficeEntity;
 import com.conexao_digital.frontoffice.enums.FormaPagamentoEnum;
-import com.conexao_digital.frontoffice.enums.StatusPagamentoEnum;
+import com.conexao_digital.frontoffice.enums.StatusPedidoEnum;
 import com.conexao_digital.frontoffice.exception.PedidoFrontofficeException;
 import com.conexao_digital.frontoffice.repository.interfaces.backoffice.IProdutoBackOfficeRepository;
 import com.conexao_digital.frontoffice.repository.interfaces.frontoffice.IEnderecoFrontofficeRepository;
@@ -70,8 +70,8 @@ public class PedidoService implements IPedidoService {
 
         pedido.setDhPedido(new Date());
 
-        StatusPagamentoEnum statusPagamento = StatusPagamentoEnum.AGUARDANDO_PAGAMENTO;
-        pedido.setIdStatusPagamento(statusPagamento.getId());
+        StatusPedidoEnum statusPedidoEnum = StatusPedidoEnum.AGUARDANDO_PAGAMENTO;
+        pedido.setIdStatusPagamento(statusPedidoEnum.getId());
 
         FormaPagamentoEnum formaPagamento = FormaPagamentoEnum.fromId(carrinhoDTO.getIdFormaPagamento());
         pedido.setIdFormaPagamento(formaPagamento.getId());
@@ -192,7 +192,7 @@ public class PedidoService implements IPedidoService {
 
     private PedidoDTO mapearPedidoEntityParaPedidoDTO(PedidoEntity pedidoEntity) {
         PedidoDTO pedido = modelMapper.map(pedidoEntity, PedidoDTO.class);
-        pedido.setDsStatusPagamento(this.getMensagemStatusPagamento(pedido.getStatusPagamento()));
+        pedido.setDsStatusPedido(this.getMensagemStatusPedido(pedido.getStatusPedidoEnum()));
         return pedido;
     }
 
@@ -219,16 +219,22 @@ public class PedidoService implements IPedidoService {
         return pedidosDTO;
     }
 
-    private String getMensagemStatusPagamento(StatusPagamentoEnum statusPagamento) {
-        switch (statusPagamento) {
+    private String getMensagemStatusPedido(StatusPedidoEnum statusPedidoEnum) {
+        switch (statusPedidoEnum) {
             case AGUARDANDO_PAGAMENTO:
                 return "Aguardando pagamento";
-                case PAGAMENTO_CONFIRMADO:
-                return "Pagamento confirmado";
-            case PAGAMENTO_CANCELADO:
-                return "Pagamento cancelado";
+            case PAGAMENTO_REJEITADO:
+                return "Pagamento rejeitado";
+            case PAGAMENTO_SUCESSO:
+                return "Pagamento com sucesso";
+            case AGUARDANDO_RETIRADA:
+                return "Aguardando retirada";
+            case EM_TRANSITO:
+                return "Em transito";
+            case ENTREGUE:
+                return "Entregue";
             default:
-                return "Status de pagamento inválido";
+                return "Status de pedido inválido";
         }
     }
 

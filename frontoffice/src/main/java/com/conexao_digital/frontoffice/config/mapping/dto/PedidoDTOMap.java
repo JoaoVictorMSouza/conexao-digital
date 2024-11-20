@@ -11,7 +11,7 @@ public class PedidoDTOMap extends PropertyMap<PedidoEntity, PedidoDTO> {
         map().setDataPedidoFront(source.getDhPedido());
         map().setIdPedido(source.getIdPedido());
         // map().setStatusPagamento(StatusPagamentoEnum.fromId(source.getIdStatusPagamento()));
-        map().setIdStatusPagamento(source.getIdStatusPagamento());
+        map().setIdStatusPedido(source.getIdStatusPagamento());
         map().setValorTotal(source.getVlTotal());
         map().setValorFrete(source.getVlFrete());
         map().setIdFormaPagamento(source.getIdFormaPagamento());

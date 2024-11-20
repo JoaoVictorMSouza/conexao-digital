@@ -27,16 +27,16 @@
                     <td th:text="'# '+ ${pedido.idPedido}">Número pedido</td>
                     <td th:utext="${#dates.format(pedido.dataPedidoFront, 'dd/MM/yyyy HH:mm')}">Data pedido</td>
                     <td th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorTotal, 1, 'POINT', 2, 'COMMA')}">Valor Total</td>
-                    <td th:text="${pedido.dsStatusPagamento}">Status</td>
+                    <td th:text="${pedido.dsStatusPedidoEnum}">Status</td>
                     <td>
-                        <a th:href="@{'/pedido/editar/' + ${pedido.idPedido}}" class="btn btn-primary">Editar pedido</a>
+                        <a th:href="@{'/pedido/editarpedido/' + ${pedido.idPedido}}" class="btn btn-primary">Editar pedido</a>
                     </td>
                 </tr>
               </tbody>
         </table>
         
         <div class="line-breaker mt-5"></div>
-        <a href="/home" class="btn btn-dark mt-3 w-25">Home</a>
+        <a href="/home" class="btn btn-dark mt-3 w-100">Home</a>
         <div class="toast-container p-3 bottom-0 end-0" th:insert="~{fragments/toastErro}"></div>
     </main>
    

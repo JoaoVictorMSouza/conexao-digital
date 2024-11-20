@@ -30,7 +30,7 @@
                     <td th:text="'# '+ ${pedido.idPedido}">Número pedido</td>
                     <td th:utext="${#dates.format(pedido.dataPedidoFront, 'dd/MM/yyyy HH:mm')}">Data pedido</td>
                     <td th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorTotal, 1, 'POINT', 2, 'COMMA')}">Valor Total</td>
-                    <td th:text="${pedido.dsStatusPagamento}">Status</td>
+                    <td th:text="${pedido.dsStatusPedido}">Status</td>
                     <td>
                         <a th:href="@{'/pedido/detalhes/' + ${pedido.idPedido}}" class="btn btn-primary">Detalhes</a>
                     </td>

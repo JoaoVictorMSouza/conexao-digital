@@ -1,13 +1,16 @@
 package com.conexao_digital.frontoffice.enums;
 
-public enum StatusPagamentoEnum {
+public enum StatusPedidoEnum {
     AGUARDANDO_PAGAMENTO(1),
-    PAGAMENTO_CONFIRMADO(2),
-    PAGAMENTO_CANCELADO(3);
+    PAGAMENTO_REJEITADO(2),
+    PAGAMENTO_SUCESSO(3),
+    AGUARDANDO_RETIRADA(4),
+    EM_TRANSITO(5),
+    ENTREGUE(6);
 
     private final int id;
 
-    StatusPagamentoEnum(int id) {
+    StatusPedidoEnum(int id) {
         this.id = id;
     }
 
@@ -15,8 +18,8 @@ public enum StatusPagamentoEnum {
         return id;
     }
 
-    public static StatusPagamentoEnum fromId(int id) {
-        for (StatusPagamentoEnum grupo : values()) {
+    public static StatusPedidoEnum fromId(int id) {
+        for (StatusPedidoEnum grupo : values()) {
             if (grupo.getId() == id) {
                 return grupo;
             }
@@ -24,3 +27,4 @@ public enum StatusPagamentoEnum {
         throw new IllegalArgumentException("Invalid id: " + id);
     }
 }
+

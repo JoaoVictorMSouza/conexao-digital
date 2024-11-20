@@ -9,7 +9,8 @@ import org.springframework.stereotype.Service;
 
 import com.conexao_digital.backoffice.dto.PedidoFrontofficeDTO;
 import com.conexao_digital.backoffice.entity.PedidoFrontofficeEntity;
-import com.conexao_digital.backoffice.enums.StatusPagamentoEnum;
+import com.conexao_digital.backoffice.enums.StatusPedidoEnum;
+import com.conexao_digital.backoffice.exception.PedidoFrontofficeException;
 import com.conexao_digital.backoffice.repository.interfaces.IPedidoFrontofficeRepository;
 import com.conexao_digital.backoffice.service.interfaces.IPedidoFrontofficeService;
 
@@ -39,20 +40,56 @@ public class PedidoFrontofficeService implements IPedidoFrontofficeService {
 
     private PedidoFrontofficeDTO mapearPedidoEntityParaPedidoDTO(PedidoFrontofficeEntity pedidoEntity) {
         PedidoFrontofficeDTO pedido = modelMapper.map(pedidoEntity, PedidoFrontofficeDTO.class);
-        pedido.setDsStatusPagamento(this.getMensagemStatusPagamento(pedido.getStatusPagamento()));
+        pedido.setDsStatusPedidoEnum(this.getMensagemStatusPedido(pedido.getStatusPedidoEnum()));
         return pedido;
     }
 
-    private String getMensagemStatusPagamento(StatusPagamentoEnum statusPagamento) {
-        switch (statusPagamento) {
+    private String getMensagemStatusPedido(StatusPedidoEnum statusPedidoEnum) {
+        switch (statusPedidoEnum) {
             case AGUARDANDO_PAGAMENTO:
                 return "Aguardando pagamento";
-                case PAGAMENTO_CONFIRMADO:
-                return "Pagamento confirmado";
-            case PAGAMENTO_CANCELADO:
-                return "Pagamento cancelado";
+            case PAGAMENTO_REJEITADO:
+                return "Pagamento rejeitado";
+            case PAGAMENTO_SUCESSO:
+                return "Pagamento com sucesso";
+            case AGUARDANDO_RETIRADA:
+                return "Aguardando retirada";
+            case EM_TRANSITO:
+                return "Em transito";
+            case ENTREGUE:
+                return "Entregue";
             default:
-                return "Status de pagamento inválido";
+                return "Status de pedido inválido";
         }
     }
+
+    @Override
+    public PedidoFrontofficeDTO buscarPedidoFrontofficePorId(Long idPedido) {
+        PedidoFrontofficeEntity pedidoEntity = this.pedidoRepository.findById(idPedido).orElse(null);
+        return this.mapearPedidoEntityParaPedidoDTO(pedidoEntity);
+    }
+
+    @Override
+    public void editarPedidoFrontoffice(PedidoFrontofficeDTO pedidoFrontoffice) {
+        if (pedidoFrontoffice.getIdStatusPedidoEnum() <= 0) {
+            throw new PedidoFrontofficeException("Status de pedido inválido");
+        }
+
+        if (pedidoFrontoffice.getIdPedido() <= 0) {
+            throw new PedidoFrontofficeException("Id do pedido inválido");
+        }
+
+        if (StatusPedidoEnum.fromId(pedidoFrontoffice.getIdStatusPedidoEnum()) == null) {
+            throw new PedidoFrontofficeException("Status de pedido inválido");
+        }
+
+        PedidoFrontofficeEntity pedidoEntity = this.pedidoRepository.findById(pedidoFrontoffice.getIdPedido()).orElse(null);
+        if (pedidoEntity == null) {
+            throw new PedidoFrontofficeException("Pedido não encontrado");
+        }
+        pedidoEntity.setIdStatusPagamento(pedidoFrontoffice.getIdStatusPedidoEnum());
+        this.pedidoRepository.save(pedidoEntity);
+    }
+
+    
 }

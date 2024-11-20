@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.conexao_digital.frontoffice.enums.StatusPagamentoEnum;
+import com.conexao_digital.frontoffice.enums.StatusPedidoEnum;
 
 public class PedidoDTO {
     private long idPedido;
@@ -13,9 +13,9 @@ public class PedidoDTO {
     private Date dataPedidoFront;
     private double valorTotal;
     private double valorFrete;
-    private StatusPagamentoEnum statusPagamento;
-    private String dsStatusPagamento;
-    private int idStatusPagamento;
+    private StatusPedidoEnum statusPedidoEnum;
+    private String dsStatusPedidoEnum;
+    private int idStatusPedidoEnum;
     private int idFormaPagamento;
 
     private List<ItemPedidoDTO> itensPedido;
@@ -50,27 +50,27 @@ public class PedidoDTO {
         this.valorFrete = valorFrete;
     }
 
-    public StatusPagamentoEnum getStatusPagamento() {
-        return statusPagamento;
+    public StatusPedidoEnum getStatusPedidoEnum() {
+        return statusPedidoEnum;
     }
-    public void setStatusPagamento(StatusPagamentoEnum statusPagamento) {
-        this.statusPagamento = statusPagamento;
-        this.idStatusPagamento = statusPagamento.getId();
-    }
-
-    public String getDsStatusPagamento() {
-        return dsStatusPagamento;
-    }
-    public void setDsStatusPagamento(String dsStatusPagamento) {
-        this.dsStatusPagamento = dsStatusPagamento;
+    public void setStatusPedidoEnum(StatusPedidoEnum statusPedidoEnum) {
+        this.statusPedidoEnum = statusPedidoEnum;
+        this.idStatusPedidoEnum = statusPedidoEnum.getId();
     }
 
-    public int getIdStatusPagamento() {
-        return idStatusPagamento;
+    public String getDsStatusPedido() {
+        return dsStatusPedidoEnum;
     }
-    public void setIdStatusPagamento(int idStatusPagamento) {
-        this.idStatusPagamento = idStatusPagamento;
-        this.statusPagamento = StatusPagamentoEnum.fromId(idStatusPagamento);
+    public void setDsStatusPedido(String dsStatusPedido) {
+        this.dsStatusPedidoEnum = dsStatusPedido;
+    }
+
+    public int getIdStatusPedido() {
+        return idStatusPedidoEnum;
+    }
+    public void setIdStatusPedido(int idStatusPedido) {
+        this.idStatusPedidoEnum = idStatusPedido;
+        this.statusPedidoEnum = StatusPedidoEnum.fromId(idStatusPedido);
     }
 
     public int getIdFormaPagamento() {
