@@ -1,6 +1,8 @@
 package com.conexao_digital.backoffice.entity;
 
 import java.util.Date;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,7 +19,8 @@ public class PedidoFrontofficeEntity {
     private double vlSubtotal;
     private double vlFrete;
     private double vlTotal;
-    private int idStatusPagamento;
+    @Column(name = "ID_STATUS_PEDIDO")
+    private int idStatusPedido;
 
     public Long getIdPedido() {
         return idPedido;
@@ -54,10 +57,10 @@ public class PedidoFrontofficeEntity {
         this.vlTotal = vlTotal;
     }
 
-    public int getIdStatusPagamento() {
-        return idStatusPagamento;
+    public int getIdStatusPedido() {
+        return idStatusPedido;
     }
-    public void setIdStatusPagamento(int idStatusPagamento) {
-        this.idStatusPagamento = idStatusPagamento;
+    public void setIdStatusPedido(int idStatusPedido) {
+        this.idStatusPedido = idStatusPedido;
     }
 }

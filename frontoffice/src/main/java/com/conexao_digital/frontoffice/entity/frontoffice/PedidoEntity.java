@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -24,6 +25,7 @@ public class PedidoEntity {
     private double vlSubtotal;
     private double vlFrete;
     private double vlTotal;
+    @Column(name = "ID_STATUS_PEDIDO")
     private int idStatusPedido;
     private int idFormaPagamento;
 

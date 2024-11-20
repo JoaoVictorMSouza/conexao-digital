@@ -87,7 +87,7 @@ public class PedidoFrontofficeService implements IPedidoFrontofficeService {
         if (pedidoEntity == null) {
             throw new PedidoFrontofficeException("Pedido não encontrado");
         }
-        pedidoEntity.setIdStatusPagamento(pedidoFrontoffice.getIdStatusPedidoEnum());
+        pedidoEntity.setIdStatusPedido(pedidoFrontoffice.getIdStatusPedidoEnum());
         this.pedidoRepository.save(pedidoEntity);
     }
 
