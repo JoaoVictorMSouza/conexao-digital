@@ -24,7 +24,7 @@ public class PedidoEntity {
     private double vlSubtotal;
     private double vlFrete;
     private double vlTotal;
-    private int idStatusPagamento;
+    private int idStatusPedido;
     private int idFormaPagamento;
 
     @ManyToOne
@@ -73,11 +73,11 @@ public class PedidoEntity {
         this.vlTotal = vlTotal;
     }
 
-    public int getIdStatusPagamento() {
-        return idStatusPagamento;
+    public int getIdStatusPedido() {
+        return idStatusPedido;
     }
-    public void setIdStatusPagamento(int idStatusPagamento) {
-        this.idStatusPagamento = idStatusPagamento;
+    public void setIdStatusPedido(int idStatusPedido) {
+        this.idStatusPedido = idStatusPedido;
     }
 
     public int getIdFormaPagamento() {

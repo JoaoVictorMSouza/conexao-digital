@@ -71,7 +71,7 @@ public class PedidoService implements IPedidoService {
         pedido.setDhPedido(new Date());
 
         StatusPedidoEnum statusPedidoEnum = StatusPedidoEnum.AGUARDANDO_PAGAMENTO;
-        pedido.setIdStatusPagamento(statusPedidoEnum.getId());
+        pedido.setIdStatusPedido(statusPedidoEnum.getId());
 
         FormaPagamentoEnum formaPagamento = FormaPagamentoEnum.fromId(carrinhoDTO.getIdFormaPagamento());
         pedido.setIdFormaPagamento(formaPagamento.getId());
@@ -121,7 +121,7 @@ public class PedidoService implements IPedidoService {
             throw new PedidoFrontofficeException("Pedido sem forma de pagamento.");
         }
 
-        if (pedido.getIdStatusPagamento() <= 0) {
+        if (pedido.getIdStatusPedido() <= 0) {
             throw new PedidoFrontofficeException("Pedido sem status de pagamento.");
         }
 
