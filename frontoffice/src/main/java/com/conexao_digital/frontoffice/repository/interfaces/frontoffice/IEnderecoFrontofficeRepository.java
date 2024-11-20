@@ -10,4 +10,5 @@ import com.conexao_digital.frontoffice.entity.frontoffice.UsuarioFrontofficeEnti
 public interface IEnderecoFrontofficeRepository extends JpaRepository<EnderecoEntity, Integer> {
     EnderecoEntity findByUsuario(UsuarioFrontofficeEntity usuario);
     List<EnderecoEntity> findAllByUsuario(UsuarioFrontofficeEntity usuario);
+    EnderecoEntity findByIdEnderecoAndUsuario(Integer idEndereco, UsuarioFrontofficeEntity usuario);
 }

@@ -26,13 +26,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="pedido : ${listaPedido}">
+                <tr th:each="pedido : ${listaPedido}" class="align-middle">
                     <td th:text="'# '+ ${pedido.idPedido}">Número pedido</td>
                     <td th:utext="${#dates.format(pedido.dataPedidoFront, 'dd/MM/yyyy HH:mm')}">Data pedido</td>
                     <td th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorTotal, 1, 'COMMA', 2, 'POINT')}">Valor Total</td>
                     <td th:text="${pedido.dsStatusPagamento}">Status</td>
                     <td>
-                        <a class="btn btn-primary">Detalhes</a>
+                        <a th:href="@{'/pedido/detalhes/' + ${pedido.idPedido}}" class="btn btn-primary">Detalhes</a>
                     </td>
                 </tr>
               </tbody>

@@ -26,7 +26,10 @@ public class PedidoEntity {
     private double vlTotal;
     private int idStatusPagamento;
     private int idFormaPagamento;
-    private int idEnderecoEntrega;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_endereco")
+    private EnderecoEntity enderecoEntrega;
     
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ItemPedidoEntity> itens;
@@ -84,13 +87,6 @@ public class PedidoEntity {
         this.idFormaPagamento = idFormaPagamento;
     }
 
-    public int getIdEnderecoEntrega() {
-        return idEnderecoEntrega;
-    }
-    public void setIdEnderecoEntrega(int idEnderecoEntrega) {
-        this.idEnderecoEntrega = idEnderecoEntrega;
-    }
-
     public List<ItemPedidoEntity> getItens() {
         return itens;
     }
@@ -103,5 +99,12 @@ public class PedidoEntity {
     }
     public void setUsuario(UsuarioFrontofficeEntity usuario) {
         this.usuario = usuario;
+    }
+
+    public EnderecoEntity getEnderecoEntrega() {
+        return enderecoEntrega;
+    }
+    public void setEnderecoEntrega(EnderecoEntity enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
     }
 }

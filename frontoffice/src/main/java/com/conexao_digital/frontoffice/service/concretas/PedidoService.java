@@ -12,12 +12,16 @@ import com.conexao_digital.frontoffice.dto.CarrinhoDTO;
 import com.conexao_digital.frontoffice.dto.ItemCarrinhoDTO;
 import com.conexao_digital.frontoffice.dto.PedidoDTO;
 import com.conexao_digital.frontoffice.dto.UsuarioLogadoDTO;
+import com.conexao_digital.frontoffice.entity.backoffice.ProdutoBackofficeEntity;
+import com.conexao_digital.frontoffice.entity.frontoffice.EnderecoEntity;
 import com.conexao_digital.frontoffice.entity.frontoffice.ItemPedidoEntity;
 import com.conexao_digital.frontoffice.entity.frontoffice.PedidoEntity;
 import com.conexao_digital.frontoffice.entity.frontoffice.UsuarioFrontofficeEntity;
 import com.conexao_digital.frontoffice.enums.FormaPagamentoEnum;
 import com.conexao_digital.frontoffice.enums.StatusPagamentoEnum;
 import com.conexao_digital.frontoffice.exception.PedidoFrontofficeException;
+import com.conexao_digital.frontoffice.repository.interfaces.backoffice.IProdutoBackOfficeRepository;
+import com.conexao_digital.frontoffice.repository.interfaces.frontoffice.IEnderecoFrontofficeRepository;
 import com.conexao_digital.frontoffice.repository.interfaces.frontoffice.IPedidoFrontofficeRepository;
 import com.conexao_digital.frontoffice.repository.interfaces.frontoffice.IUsuarioFrontofficeRepository;
 import com.conexao_digital.frontoffice.service.interfaces.IPedidoService;
@@ -26,14 +30,20 @@ import com.conexao_digital.frontoffice.service.interfaces.IPedidoService;
 public class PedidoService implements IPedidoService {
     private IPedidoFrontofficeRepository pedidoRepository;
     private IUsuarioFrontofficeRepository usuarioRepository;
+    private IEnderecoFrontofficeRepository enderecoRepository;
+    private IProdutoBackOfficeRepository produtoRepository;
     private ModelMapper modelMapper;
 
     @Autowired
     public PedidoService(IPedidoFrontofficeRepository iPedidoRepository,
                         IUsuarioFrontofficeRepository iUsuarioRepository,
+                        IEnderecoFrontofficeRepository iEnderecoRepository,
+                        IProdutoBackOfficeRepository iProdutoRepository,
                         ModelMapper modelMapper) {
         this.pedidoRepository = iPedidoRepository;
         this.usuarioRepository = iUsuarioRepository;
+        this.enderecoRepository = iEnderecoRepository;
+        this.produtoRepository = iProdutoRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -69,7 +79,9 @@ public class PedidoService implements IPedidoService {
         UsuarioFrontofficeEntity usuario = usuarioRepository.findByIdUsuario(usuarioLogado.getId());
         pedido.setUsuario(usuario);
 
-        pedido.setIdEnderecoEntrega(carrinhoDTO.getEndereco().getIdEndereco());
+        EnderecoEntity endereco = this.enderecoRepository.findByIdEnderecoAndUsuario(carrinhoDTO.getEndereco().getIdEndereco(), usuario);
+
+        pedido.setEnderecoEntrega(endereco);
     }
 
     private void validarValores(PedidoEntity pedido) {
@@ -97,7 +109,11 @@ public class PedidoService implements IPedidoService {
             throw new PedidoFrontofficeException("Pedido sem usuário.");
         }
 
-        if (pedido.getIdEnderecoEntrega() <= 0) {
+        if (pedido.getEnderecoEntrega() == null) {
+            throw new PedidoFrontofficeException("Pedido sem endereço de entrega atrelado.");
+        }
+
+        if (pedido.getEnderecoEntrega().getIdEndereco() <= 0) {
             throw new PedidoFrontofficeException("Pedido sem endereço de entrega.");
         }
 
@@ -128,7 +144,11 @@ public class PedidoService implements IPedidoService {
                 throw new PedidoFrontofficeException("Item do pedido sem pedido atrelado.");
             }
 
-            if (item.getIdProduto() <= 0) {
+            if (item.getProduto() == null) {
+                throw new PedidoFrontofficeException("Item do pedido sem produto atrelado."); 
+            }
+
+            if (item.getProduto().getIdProduto() <= 0) {
                 throw new PedidoFrontofficeException("Item do pedido sem produto.");
             }
 
@@ -144,6 +164,8 @@ public class PedidoService implements IPedidoService {
         for (ItemCarrinhoDTO item : carrinhoDTO.getItens()) {
             ItemPedidoEntity itemPedido = this.mapearItemCarrinhoDTOParaItemPedidoEntity(item);
             itemPedido.setPedido(pedido);
+            ProdutoBackofficeEntity produto = this.produtoRepository.findByIdProduto(item.getProduto().getId());
+            itemPedido.setProduto(produto);
             itensPedido.add(itemPedido);
         }
 
@@ -208,5 +230,29 @@ public class PedidoService implements IPedidoService {
             default:
                 return "Status de pagamento inválido";
         }
+    }
+
+    public PedidoDTO buscarPedidoPorId(Long idPedido, int idUsuario) {
+        if (idUsuario <= 0) {
+            throw new PedidoFrontofficeException("ID do usuário inválido.");
+        }
+
+        UsuarioFrontofficeEntity usuario = usuarioRepository.findByIdUsuario(idUsuario);
+
+        if (usuario == null) {
+            throw new PedidoFrontofficeException("Usuário não encontrado.");
+        }
+
+        if (idPedido <= 0) {
+            throw new PedidoFrontofficeException("ID do pedido inválido.");
+        }
+
+        PedidoEntity pedido = pedidoRepository.findByIdPedidoAndUsuario(idPedido, usuario);
+
+        if (pedido == null) {
+            throw new PedidoFrontofficeException("Pedido não encontrado.");
+        }
+
+        return this.mapearPedidoEntityParaPedidoDTO(pedido);
     }
 }

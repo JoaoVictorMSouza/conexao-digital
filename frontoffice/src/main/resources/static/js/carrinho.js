@@ -88,7 +88,6 @@ function calcularFrete() {
     const valorTotalPedido = valorTotalItens + valorFrete;
 
     document.getElementById('valor-frete').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
-    document.getElementById('valor-total-pedido').innerText = `R$ ${valorTotalPedido.toFixed(2).replace('.', ',')}`;
     document.getElementById('resultado-frete').innerText = `O valor do frete (${frete}) para o CEP ${cep} é R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
 
     let carrinho = {

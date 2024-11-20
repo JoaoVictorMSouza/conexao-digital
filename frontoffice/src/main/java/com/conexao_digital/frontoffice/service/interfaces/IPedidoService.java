@@ -9,4 +9,5 @@ import com.conexao_digital.frontoffice.dto.UsuarioLogadoDTO;
 public interface IPedidoService {
     public PedidoDTO gerarPedido(CarrinhoDTO carrinhoDTO, UsuarioLogadoDTO usuarioLogado);
     public List<PedidoDTO> listarPedidosPorUsuario(int idUsuario);
+    PedidoDTO buscarPedidoPorId(Long idPedido, int idUsuario);
 }

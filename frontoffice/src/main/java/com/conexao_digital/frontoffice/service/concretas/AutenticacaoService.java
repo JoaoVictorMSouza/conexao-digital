@@ -32,8 +32,6 @@ public class AutenticacaoService implements IAutenticacaoService {
             throw new UsernameNotFoundException("Usuário não encontrado com o e-mail: " + email);
         }
 
-        GeneroEnum generoEnum = GeneroEnum.fromId(usuario.getIdGenero());
-
         return User.builder()
                 .username(usuario.getDsEmail())
                 .password(usuario.getDsSenha())

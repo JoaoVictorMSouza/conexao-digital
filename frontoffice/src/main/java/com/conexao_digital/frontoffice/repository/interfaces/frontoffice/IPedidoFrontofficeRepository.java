@@ -10,4 +10,5 @@ import java.util.List;
 
 public interface IPedidoFrontofficeRepository extends JpaRepository<PedidoEntity, Long> {
     List<PedidoEntity> findByUsuario(UsuarioFrontofficeEntity usuario);
+    PedidoEntity findByIdPedidoAndUsuario(Long idPedido, UsuarioFrontofficeEntity usuario);
 }

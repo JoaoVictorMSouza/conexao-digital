@@ -1,5 +1,7 @@
 package com.conexao_digital.frontoffice.entity.frontoffice;
 
+import com.conexao_digital.frontoffice.entity.backoffice.ProdutoBackofficeEntity;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,7 +18,11 @@ public class ItemPedidoEntity {
     private Long idItemPedido;
     private int nrQuantidade;
     private double vlPrecoUnitario;
-    private int idProduto;
+
+    @ManyToOne
+    @JoinColumn(name = "fk_produto")
+    private ProdutoBackofficeEntity produto;
+
     @ManyToOne
     @JoinColumn(name = "fk_pedido")
     private PedidoEntity pedido;
@@ -42,17 +48,17 @@ public class ItemPedidoEntity {
         this.vlPrecoUnitario = vlPrecoUnitario;
     }
 
-    public int getIdProduto() {
-        return idProduto;
-    }
-    public void setIdProduto(int idProduto) {
-        this.idProduto = idProduto;
-    }
-
     public PedidoEntity getPedido() {
         return pedido;
     }
     public void setPedido(PedidoEntity pedido) {
         this.pedido = pedido;
-    }    
+    }   
+    
+    public ProdutoBackofficeEntity getProduto() {
+        return produto;
+    }
+    public void setProduto(ProdutoBackofficeEntity produto) {
+        this.produto = produto;
+    }
 }
