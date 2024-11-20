@@ -2,7 +2,7 @@ package com.conexao_digital.backoffice.dto;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import com.conexao_digital.backoffice.entity.UsuarioBackofficeEntity;
-import com.conexao_digital.backoffice.enums.UsuarioGrupo;
+import com.conexao_digital.backoffice.enums.UsuarioGrupoEnum;
 import com.conexao_digital.backoffice.utils.AutenticacaoUtils;
 
 public class UsuarioLogadoDTO {
@@ -10,7 +10,7 @@ public class UsuarioLogadoDTO {
     private String email;
     private String grupo;
     private String nome;
-    private UsuarioGrupo usuarioGrupo;;
+    private UsuarioGrupoEnum usuarioGrupo;;
 
     public UsuarioLogadoDTO(UserDetails usuario, UsuarioBackofficeEntity usuarioBackoffice) {
         this.email = usuario.getUsername();
@@ -28,7 +28,7 @@ public class UsuarioLogadoDTO {
         return grupo;
     }
 
-    public UsuarioGrupo getUsuarioGrupo() {
+    public UsuarioGrupoEnum getUsuarioGrupo() {
         return usuarioGrupo;
     }
 

@@ -22,6 +22,8 @@ public class ModelMapperConfig {
         modelMapper.addMappings(new ImagemProdutoBackofficeEntityMap());
         modelMapper.addMappings(new ImagemProdutoBackofficeDTOMap());
 
+        modelMapper.addMappings(new PedidoFrontofficeDTOMap());
+
         return modelMapper;
     }
 }

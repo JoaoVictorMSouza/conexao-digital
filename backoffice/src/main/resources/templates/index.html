@@ -27,6 +27,14 @@
                 </div>
             </div>
         </a>
+        <a th:href="@{/pedido/listarPedidosFrontoffice}" th:if="${usuarioLogado.grupo == 'ESTOQUISTA'}">
+            <div class="card text-center d-flex justify-content-center align-items-center user-card p-2">
+                <img src="/images/order-icon.png" class="card-img-top w-50" alt="ícone de pedidos">
+                <div class="card-body">
+                    <a th:href="@{/pedido/listarPedidosFrontoffice}" class="btn btn-primary">Pedidos</a>
+                </div>
+            </div>
+        </a>
     </main>
 
     <!-- Adicionando o Bootstrap -->

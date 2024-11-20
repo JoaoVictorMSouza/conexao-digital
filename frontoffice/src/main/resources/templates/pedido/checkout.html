@@ -37,10 +37,10 @@
                                 <p th:text="${carrinhoItem.quantidade}"></p>
                             </td>
                             <td class="align-middle">
-                                <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinhoItem.produto.preco, 1, 'COMMA', 2, 'POINT')}"></p>
+                                <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinhoItem.produto.preco, 1, 'POINT', 2, 'COMMA')}"></p>
                             </td>
                             <td class="align-middle">
-                                <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinhoItem.produto.preco * carrinhoItem.quantidade, 1, 'COMMA', 2, 'POINT')}"></p>
+                                <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinhoItem.produto.preco * carrinhoItem.quantidade, 1, 'POINT', 2, 'COMMA')}"></p>
                             </td>
                         </tr>
                     </tbody>
@@ -112,15 +112,15 @@
                 <h5>Resumo do pedido</h5>
                 <div class="d-flex justify-content-between">
                     <p>Subtotal</p>
-                    <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.getValorTotalItens(), 1, 'COMMA', 2, 'POINT')}"></p>
+                    <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.getValorTotalItens(), 1, 'POINT', 2, 'COMMA')}"></p>
                 </div>
                 <div class="d-flex justify-content-between">
                     <p>Frete</p>
-                    <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorFrete, 1, 'COMMA', 2, 'POINT')}"></p>
+                    <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorFrete, 1, 'POINT', 2, 'COMMA')}"></p>
                 </div>
                 <div class="d-flex justify-content-between">
                     <p>Total</p>
-                    <p id="total" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.getValorTotal(), 1, 'COMMA', 2, 'POINT')}"></p>
+                    <p id="total" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.getValorTotal(), 1, 'POINT', 2, 'COMMA')}"></p>
                 </div>
             </div>
         </div>

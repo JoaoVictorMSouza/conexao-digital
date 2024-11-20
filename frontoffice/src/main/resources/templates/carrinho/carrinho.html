@@ -39,10 +39,10 @@
                                 </div>
                             </td>
                             <td class="align-middle">
-                                <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinhoItem.produto.preco, 1, 'COMMA', 2, 'POINT')}"></p>
+                                <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinhoItem.produto.preco, 1, 'POINT', 2, 'COMMA')}"></p>
                             </td>
                             <td class="align-middle">
-                                <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinhoItem.produto.preco * carrinhoItem.quantidade, 1, 'COMMA', 2, 'POINT')}"></p>
+                                <p th:text="'R$ ' + ${#numbers.formatDecimal(carrinhoItem.produto.preco * carrinhoItem.quantidade, 1, 'POINT', 2, 'COMMA')}"></p>
                             </td>
                         </tr>
                     </tbody>
@@ -66,15 +66,15 @@
                 <div class="d-flex justify-content-between">
                     <p th:if="${carrinho.getItens().size() > 1}" th:text="${carrinho.getItens().size()} + ' produtos'"></p>
                     <p th:if="${carrinho.getItens().size() == 1}" th:text="${carrinho.getItens().size()} + ' produto'"></p>
-                    <p id="valor-total-itens" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorTotalItens, 1, 'COMMA', 2, 'POINT')}"></p>
+                    <p id="valor-total-itens" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorTotalItens, 1, 'POINT', 2, 'COMMA')}"></p>
                 </div>
                 <div class="d-flex justify-content-between" id="container-frete" style="display: none !important;">
                     <p>Frete:</p>
-                    <p id="valor-frete" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorFrete, 1, 'COMMA', 2, 'POINT')}">R$ 0,00</p>
+                    <p id="valor-frete" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorFrete, 1, 'POINT', 2, 'COMMA')}">R$ 0,00</p>
                 </div>
                 <div class="d-flex justify-content-between">
                     <p>Total:</p>
-                    <p id="valor-total-pedido" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorTotal, 1, 'COMMA', 2, 'POINT')}"></p>
+                    <p id="valor-total-pedido" th:text="'R$ ' + ${#numbers.formatDecimal(carrinho.valorTotal, 1, 'POINT', 2, 'COMMA')}"></p>
                 </div>
                 <button th:if="${usuarioLogado == null}" class="btn btn-primary mt-3" id="btn-checkout" style="display: none;" onclick="irParaCheckout('/pedido/checkout')">Concluir Compra</button>
                 <button th:if="${usuarioLogado != null}" class="btn btn-primary mt-3" id="btn-checkout" onclick="irParaCheckout()">Concluir Compra</button>

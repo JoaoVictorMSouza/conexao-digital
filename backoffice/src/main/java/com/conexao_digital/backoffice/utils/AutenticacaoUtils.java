@@ -1,17 +1,17 @@
 package com.conexao_digital.backoffice.utils;
 
 import org.springframework.security.core.userdetails.UserDetails;
-import com.conexao_digital.backoffice.enums.UsuarioGrupo;
+import com.conexao_digital.backoffice.enums.UsuarioGrupoEnum;
 
 public class AutenticacaoUtils {
-    public static UsuarioGrupo retornarUsuarioGrupo(UserDetails usuario) {
+    public static UsuarioGrupoEnum retornarUsuarioGrupo(UserDetails usuario) {
         String grupo = usuario.getAuthorities().stream().findFirst().get().getAuthority();
 
         switch (grupo) {
             case "ROLE_ADMIN":
-                return UsuarioGrupo.ADMIN;
+                return UsuarioGrupoEnum.ADMIN;
             default:
-                return UsuarioGrupo.ESTOQUISTA;
+                return UsuarioGrupoEnum.ESTOQUISTA;
         }
     }
 }

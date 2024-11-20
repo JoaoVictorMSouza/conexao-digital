@@ -1,6 +1,6 @@
 package com.conexao_digital.backoffice.dto;
 
-import com.conexao_digital.backoffice.enums.UsuarioGrupo;
+import com.conexao_digital.backoffice.enums.UsuarioGrupoEnum;
 
 public class UsuarioBackofficeDTO {
     private int id;
@@ -10,7 +10,7 @@ public class UsuarioBackofficeDTO {
     private String senha;
     private String confirmacaoSenha;
     private int idUsuarioGrupo;
-    private UsuarioGrupo usuarioGrupo;
+    private UsuarioGrupoEnum usuarioGrupo;
     private boolean ativo;
 
     public int getId() {
@@ -71,15 +71,15 @@ public class UsuarioBackofficeDTO {
         this.ativo = ativo;
     }
 
-    public UsuarioGrupo getUsuarioGrupo() {
+    public UsuarioGrupoEnum getUsuarioGrupo() {
         return usuarioGrupo;
     }
 
     private void setUsuarioGrupoById(int id) {
-        this.usuarioGrupo = UsuarioGrupo.fromId(id);
+        this.usuarioGrupo = UsuarioGrupoEnum.fromId(id);
     }
 
     public void setUsuarioGrupo() {
-        this.usuarioGrupo = UsuarioGrupo.fromId(this.idUsuarioGrupo);
+        this.usuarioGrupo = UsuarioGrupoEnum.fromId(this.idUsuarioGrupo);
     }
 }

@@ -31,7 +31,7 @@ import com.conexao_digital.frontoffice.service.interfaces.IUsuarioService;
 
 @Controller
 @RequestMapping("/pedido")
-public class PedidoControllerController {
+public class PedidoController {
     private IAutenticacaoService autenticacaoService;
     private ICarrinhoService carrinhoService;
     private IUsuarioService usuarioService;
@@ -39,7 +39,7 @@ public class PedidoControllerController {
     private IImagemProdutoService imagemProdutoService;
 
     @Autowired
-    public PedidoControllerController(IAutenticacaoService autenticacaoService, 
+    public PedidoController(IAutenticacaoService autenticacaoService, 
                                         ICarrinhoService carrinhoService,
                                         IUsuarioService usuarioService,
                                         IPedidoService pedidoService,

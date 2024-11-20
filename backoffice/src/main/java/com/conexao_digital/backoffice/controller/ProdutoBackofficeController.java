@@ -20,7 +20,7 @@ import org.springframework.data.domain.Page;
 import com.conexao_digital.backoffice.dto.ImagemProdutoBackofficeDTO;
 import com.conexao_digital.backoffice.dto.ProdutoBackofficeDTO;
 import com.conexao_digital.backoffice.dto.UsuarioLogadoDTO;
-import com.conexao_digital.backoffice.enums.UsuarioGrupo;
+import com.conexao_digital.backoffice.enums.UsuarioGrupoEnum;
 import com.conexao_digital.backoffice.exception.ProdutoBackofficeException;
 import com.conexao_digital.backoffice.service.interfaces.IAutenticacaoService;
 import com.conexao_digital.backoffice.service.interfaces.IImagemProdutoService;
@@ -104,7 +104,7 @@ public class ProdutoBackofficeController {
         try {
             UsuarioLogadoDTO usuarioLogado = autenticacaoService.retornarUsuarioLogado();
 
-            this.produtoService.editarProdutoBackOffice(produto, imagens, ordenacaoImagens, usuarioLogado.getUsuarioGrupo() == UsuarioGrupo.ADMIN);
+            this.produtoService.editarProdutoBackOffice(produto, imagens, ordenacaoImagens, usuarioLogado.getUsuarioGrupo() == UsuarioGrupoEnum.ADMIN);
 
             response.put("status", "OK");
 

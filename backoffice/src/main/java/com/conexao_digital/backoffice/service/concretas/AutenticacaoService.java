@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import com.conexao_digital.backoffice.dto.UsuarioLogadoDTO;
 import com.conexao_digital.backoffice.entity.UsuarioBackofficeEntity;
-import com.conexao_digital.backoffice.enums.UsuarioGrupo;
+import com.conexao_digital.backoffice.enums.UsuarioGrupoEnum;
 import com.conexao_digital.backoffice.repository.interfaces.IUsuarioBackOfficeRepository;
 import com.conexao_digital.backoffice.service.interfaces.IAutenticacaoService;
 import org.springframework.security.core.Authentication;
@@ -30,7 +30,7 @@ public class AutenticacaoService implements IAutenticacaoService {
             throw new UsernameNotFoundException("Usuário não encontrado com o e-mail: " + email);
         }
 
-        UsuarioGrupo usuarioGrupo = UsuarioGrupo.fromId(usuario.getIdGrupo());
+        UsuarioGrupoEnum usuarioGrupo = UsuarioGrupoEnum.fromId(usuario.getIdGrupo());
 
         return User.builder()
                 .username(usuario.getDsEmail())

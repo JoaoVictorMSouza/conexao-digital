@@ -1,12 +1,12 @@
 package com.conexao_digital.backoffice.enums;
 
-public enum UsuarioGrupo {
+public enum UsuarioGrupoEnum {
     ADMIN(1),
     ESTOQUISTA(2);
 
     private final int id;
 
-    UsuarioGrupo(int id) {
+    UsuarioGrupoEnum(int id) {
         this.id = id;
     }
 
@@ -14,8 +14,8 @@ public enum UsuarioGrupo {
         return id;
     }
 
-    public static UsuarioGrupo fromId(int id) {
-        for (UsuarioGrupo grupo : values()) {
+    public static UsuarioGrupoEnum fromId(int id) {
+        for (UsuarioGrupoEnum grupo : values()) {
             if (grupo.getId() == id) {
                 return grupo;
             }
