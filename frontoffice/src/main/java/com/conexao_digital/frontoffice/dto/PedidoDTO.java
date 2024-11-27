@@ -13,6 +13,7 @@ public class PedidoDTO {
     private Date dataPedidoFront;
     private double valorTotal;
     private double valorFrete;
+    private double valorSubtotal;
     private StatusPedidoEnum statusPedidoEnum;
     private String dsStatusPedidoEnum;
     private int idStatusPedidoEnum;
@@ -48,6 +49,13 @@ public class PedidoDTO {
     }
     public void setValorFrete(double valorFrete) {
         this.valorFrete = valorFrete;
+    }
+
+    public double getValorSubtotal() {
+        return valorSubtotal;
+    }
+    public void setValorSubtotal(double valorSubtotal) {
+        this.valorSubtotal = valorSubtotal;
     }
 
     public StatusPedidoEnum getStatusPedidoEnum() {

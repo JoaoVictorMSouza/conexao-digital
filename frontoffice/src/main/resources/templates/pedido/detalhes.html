@@ -110,7 +110,7 @@
                 <h5>Resumo do pedido</h5>
                 <div class="d-flex justify-content-between">
                     <p>Subtotal</p>
-                    <p th:text="'R$ ' + ${#numbers.formatDecimal(pedido.getValorTotal(), 1, 'POINT', 2, 'COMMA')}"></p>
+                    <p th:text="'R$ ' + ${#numbers.formatDecimal(pedido.valorSubtotal, 1, 'POINT', 2, 'COMMA')}"></p>
                 </div>
                 <div class="line-breaker"></div>
                 <div class="d-flex justify-content-between">
