@@ -2,10 +2,26 @@
     <a href="/home">
         <img src="/images/logo-site.png" alt="Logo" style="width: 90px;">
     </a>
-    <div class="d-flex flex-grow-1 justify-content-end align-items-center">
+    <div class="d-flex flex-grow-1 justify-content-end align-items-center usuario-logado">
         <h2 class="text-white">
             Bem-vindo, &nbsp;
             <h1 class="text-white" th:text="${usuarioLogado.nome.toUpperCase()}"></h1>
         </h2>
+        <div class="usuario-logado-container rounded shadow">
+            <button id="logoutButton" class="btn btn-primary">Sair</button>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // Faz uma requisição para o endpoint de logout
+            fetch('/logout', { method: 'GET' })
+                .then(response => {
+                    if (response.ok) {
+                        // Redireciona para a página inicial
+                        window.location.href = '/home';
+                    }
+                });
+        });
+    </script>
 </header>

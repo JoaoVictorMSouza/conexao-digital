@@ -2,3 +2,26 @@
     height: 70px;
     background-color: #8a2be2;
 }
+
+.usuario-logado-container {
+    display: none;
+    background-color: #FFF;
+    width: 150px;
+    height: 100px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    position: absolute;
+    top: 3rem;
+    z-index: 10;
+}
+
+.usuario-logado:hover {
+    .usuario-logado-container {
+        display: flex;
+    }
+}
+
+.usuario-logado-container :hover {
+    display: flex;
+}
